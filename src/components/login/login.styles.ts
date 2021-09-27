@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles'
-import BAMX from '../images/BAMX.jpg'
+import BAMX from '../images/fondo-bamx.png'
 
 export const useStyles = makeStyles(theme => ({
     root: {
@@ -10,8 +10,6 @@ export const useStyles = makeStyles(theme => ({
         height: '100vh'
     },
     container: {
-        opacity: '0.8',
-        //background: 'rgb(255,255,255,0.5)',
         height: '60%',
         marginTop: theme.spacing(10),
         [theme.breakpoints.down(400 + theme.spacing(2) + 2)]: {
@@ -36,8 +34,7 @@ export const useStyles = makeStyles(theme => ({
     },
     button: {
         marginTop: theme.spacing(10),
-        spacing: 4
-        
+        spacing: 4,
     }
 
 }))

@@ -47,7 +47,8 @@ export const LoginComponent: FC = (): JSX.Element => {
                                 </Button>
                         </Grid>
                         <Grid container justifyContent="flex-end">
-                            <Button className = {classes.button}
+                            <Button 
+                                className = {classes.button}
                                 fullWidth
                                 variant = 'text'
                                 color = 'primary'
