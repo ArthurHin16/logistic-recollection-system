@@ -53,7 +53,7 @@ export const LoginComponent: FC = (): JSX.Element => {
                                 variant = 'text'
                                 color = 'primary'
                             >
-                                ¿Olvidaste tu contraseña?
+                                ¿Olvidaste tu contraseña? 
                             </Button>
                         </Grid>
                     </form>
