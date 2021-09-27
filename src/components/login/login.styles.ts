@@ -11,6 +11,7 @@ export const useStyles = makeStyles(theme => ({
     },
     container: {
         opacity: '0.8',
+        //background: 'rgb(255,255,255,0.5)',
         height: '60%',
         marginTop: theme.spacing(10),
         [theme.breakpoints.down(400 + theme.spacing(2) + 2)]: {
