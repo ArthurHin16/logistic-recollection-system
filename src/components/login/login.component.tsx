@@ -16,7 +16,7 @@ export const LoginComponent: FC = (): JSX.Element => {
                         <LockOutLinedIcon/>
                     </Avatar>
                     <Typography component = 'h1' variant='h5'>
-                        ¡Bienvenido! 
+                        ¡Bienvenido! BAMX
                     </Typography>
                     <form className = {classes.form}>
                         <TextField
