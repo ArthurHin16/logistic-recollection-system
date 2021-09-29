@@ -76,3 +76,8 @@
     font-size: 33px;
     text-align: center;
 }
+
+.button {
+    color: #542463;
+    font-family: 'Roboto';
+}

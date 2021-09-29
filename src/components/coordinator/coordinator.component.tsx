@@ -8,18 +8,25 @@ import Logo from '../images/bamx-oficial.png';
 import Logout from '../assets/log-out.png';
 import Ruta from '../assets/ruta.png';
 import Camion from '../assets/camion-de-reparto.png';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 export const CoordinatorComponent: FC = (): JSX.Element => {
     return(
         <Grid container>
-                <AppBar position="static" style={{background: '#F9F6FB', height: '31.88vh'} }>
+                <AppBar position="static" style={{background: '#F9F6FB', height: '25vh'} }>
                     <Toolbar>
-                        <img src = {Logo} id='logoMorelos'/> 
+                        <Grid container xs={3} sm={3} md = {3} lg = {2}>
+                            <img src = {Logo} width='100%'/> 
+                        </Grid>
+
+                        
                     <Typography variant="h4" component="div" sx={{ flexGrow: 1 }} color='#FF9300' align='center'>
                         Coordinador
                 </Typography>
-                <Button style={{ color: '#542463' }}>Cerrar sesion</Button>
+                <Button style = {{color: '#542463'}} size="medium">Cerrar sesión <ExitToAppIcon/></Button>
                 </Toolbar>
+                
+                
             </AppBar>
             
             {/*<Grid container item  className= "top" spacing={3}>
@@ -54,5 +61,3 @@ export const CoordinatorComponent: FC = (): JSX.Element => {
         </Grid>
     )
 }
-/*Preguntas al artur: ¿Tengo que meter el paper en un boton? 
-¿Responsividad en la parte superior?*/
