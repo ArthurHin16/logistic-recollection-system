@@ -46,16 +46,6 @@ export const LoginComponent: FC = (): JSX.Element => {
                                     Iniciar sesión
                                 </Button>
                         </Grid>
-                        <Grid container justifyContent="flex-end">
-                            <Button 
-                                className = {classes.button}
-                                fullWidth
-                                variant = 'text'
-                                color = 'primary'
-                            >
-                                ¿Olvidaste tu contraseña?
-                            </Button>
-                        </Grid>
                     </form>
                </div>
            </Container>
