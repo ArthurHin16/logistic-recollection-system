@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+*{
+    font-family: 'Roboto';
+}
+
+.top{
+    background: #F9F6FB;
+    height: 31.88vh;
+    display: flex;
+    justify-content: space-between;
+}
+
+#logoMorelos{
+    width: 200px;
+    height: 124.54px;
+    position: relative;
+    left: 20px;
+}
+
+#letra_coordinador{
+    color: #FF9300;
+    font-size: 48px;
+}
+
+#apartadoLogout{
+    position: relative;
+    right: 20px;
+    display: flex;
+    top: 20px;
+}
+
+#letra_cerrarSesion{
+    color: #542463;
+    font-size: 24px;
+    text-decoration: underline;
+    position: relative;
+    right: 20px;
+}
+
+#logoLogout{
+    width: 50px;
+    height: 50px;
+    display: flex;
+    position: relative;
+    top: 15px;
+}
+
+.down{
+    height: 68.12vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card{
+    width: 250px;
+    height: 297px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    border: 2px solid #000;
+    margin: 3%
+}
+
+.imagecard{
+    width: 200px;
+    height: 200px;
+    position: relative;
+    top: 10px;
+}
+
+.cardText{
+    font-size: 33px;
+    text-align: center;
+}
