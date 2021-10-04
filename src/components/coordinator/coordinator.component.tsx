@@ -16,7 +16,7 @@ export const CoordinatorComponent: FC = (): JSX.Element => {
                             <img src = {Logo} width='100%'/> 
                         </Grid>
 
-                        
+
                     <Typography variant="h4" component="div" sx={{ flexGrow: 1 }} color='#FF9300' align='center'>
                         Coordinador
                 </Typography>
