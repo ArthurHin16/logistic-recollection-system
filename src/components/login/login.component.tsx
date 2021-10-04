@@ -18,6 +18,9 @@ export const LoginComponent: FC = (): JSX.Element => {
                     <Typography component = 'h1' variant='h5'>
                         ¡Bienvenido! 
                     </Typography>
+                    <Typography component = 'h1' variant='h5'>
+                        Administrador
+                    </Typography>
                     <form className = {classes.form}>
                         <TextField
                             fullWidth
@@ -41,20 +44,10 @@ export const LoginComponent: FC = (): JSX.Element => {
                                     className = {classes.button}
                                     fullWidth
                                     variant = 'contained'
-                                    color = 'primary'
+                                    style = {{ backgroundColor: '#FF9300'}}
                                 >
                                     Iniciar sesión
                                 </Button>
-                        </Grid>
-                        <Grid container justifyContent="flex-end">
-                            <Button 
-                                className = {classes.button}
-                                fullWidth
-                                variant = 'text'
-                                color = 'primary'
-                            >
-                                ¿Olvidaste tu contraseña? 
-                            </Button>
                         </Grid>
                     </form>
                </div>
