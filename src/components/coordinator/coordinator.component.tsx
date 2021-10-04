@@ -13,7 +13,7 @@ export const CoordinatorComponent: FC = (): JSX.Element => {
                 <AppBar position="static" style={{background: '#F9F6FB', height: '25vh'} }>
                     <Toolbar>
                         <Grid container xs={3} sm={3} md = {3} lg = {2}>
-                            <img src = {Logo} width='100%'/> 
+                            <img src = {Logo} alt = "Logo" width='100%'/> 
                         </Grid>
 
                         
@@ -29,13 +29,13 @@ export const CoordinatorComponent: FC = (): JSX.Element => {
             <Grid container className = "down">
                 <Button>
                     <Paper elevation= {3} className= "card" >
-                        <img src = {Ruta} className="imagecard"/>
+                        <img src = {Ruta} alt = "Ruta" className="imagecard"/>
                         <p className="cardText">Rutas</p>
                     </Paper>
                 </Button>
                 <Button>
                     <Paper elevation= {3} className= "card">
-                        <img src = {Camion} className="imagecard"/>
+                        <img src = {Camion} alt = "Camion" className="imagecard"/>
                         <p className="cardText">Solicitudes de entrega</p>
                     </Paper>
                 </Button>
