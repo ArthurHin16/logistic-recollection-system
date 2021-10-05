@@ -27,7 +27,7 @@ export const AdminAddStoreComponent: FC = (): JSX.Element => {
                   <Typography variant="h4" component="div" sx={{ flexGrow: 1 }} color='#FF9300' align='center'>
                     Administrador
                   </Typography>
-                  <Button style = {{color: '#542463'}} size="medium">Cerrar sesión <ExitToAppIcon/></Button>
+                  <Button size="medium" style = {{ color: "#FF9300" }} >Cerrar sesión <ExitToAppIcon/></Button>
                 </Toolbar> 
             </AppBar>
             <Grid 
