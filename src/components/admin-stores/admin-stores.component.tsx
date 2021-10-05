@@ -64,7 +64,7 @@ export const AdminStoresComponent: FC = (): JSX.Element => {
   function handleClick1() {
     history.push("/admin-newstore");
   }
-
+  //modal
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
 
