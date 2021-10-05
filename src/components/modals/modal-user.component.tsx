@@ -2,20 +2,26 @@ import { FC, useState } from 'react';
 import { Typography } from '@mui/material';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
-export const ModalUser: FC = (): JSX.Element => {  
-  const [modal, setModal] = useState(false);
 
-  const toggle = () => setModal(!modal);
+interface IModalUser {
+  open: boolean;
+  toggle: () => void;
+  //Agregar otra propiedad que sea USER: any Crear una interfaz a el usario para que le pase la información
+}
+
+export const ModalUser: FC<IModalUser> = ({open, toggle}): JSX.Element => {  
+  const handleToggle = () => {
+    toggle()
+  }
 
   return (
     <div>
-      <Button color="#FF9300" onClick={toggle}>Revisar</Button>
-      <Modal isOpen={modal} toggle={toggle}>
-        <ModalHeader toggle={toggle}>
+      <Modal isOpen={open} toggle={handleToggle}>
+        <ModalHeader toggle={handleToggle}>
       
         </ModalHeader>
         <ModalBody>
-            ID Usuario: AL12 <br></br>
+            ID Usuario: AL12 <br></br> {/*user.id*/}
             Nombre completo: Arturo Hinojosa Reyna <br></br>
             Rol: Almacenista
             <Typography
@@ -30,8 +36,8 @@ export const ModalUser: FC = (): JSX.Element => {
             </Typography>
         </ModalBody>
         <ModalFooter>
-            <Button variant="contained" style = {{backgroundColor:"#542463", marginRight: "20px"}} onClick={toggle}>ELIMINAR</Button>{' '}
-            <Button variant="contained" style = {{backgroundColor:"#F3071E"}} onClick={toggle}>EDITAR</Button>  
+            <Button variant="contained" style = {{backgroundColor:"#542463", marginRight: "20px"}} onClick={handleToggle}>ELIMINAR</Button>{' '}
+            <Button variant="contained" style = {{backgroundColor:"#F3071E"}} onClick={handleToggle}>EDITAR</Button>  
         </ModalFooter>
       </Modal>
     </div>
