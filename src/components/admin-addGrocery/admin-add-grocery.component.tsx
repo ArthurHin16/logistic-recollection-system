@@ -45,7 +45,7 @@ export const AdminAddGroceryComponent: FC = (): JSX.Element => {
                          <Col xs = { 6 } md = { 6 } lg = { 6 }>
                              <FormGroup>
                                  <Label for="b_ID">ID</Label>
-                                 <Input type="text" name="b_ID" id="ID_bodega"/>
+                                 <Input type="text" name="b_ID" id="ID_bodega" disabled/>
                              </FormGroup>
                          </Col>
                          <Col xs = { 6 } md = { 6 } lg = { 6 }>
