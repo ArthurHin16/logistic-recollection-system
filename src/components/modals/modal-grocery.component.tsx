@@ -2,16 +2,22 @@ import { FC, useState } from 'react';
 import { Typography } from '@mui/material';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
-export const ModalGrocery: FC = (): JSX.Element => {  
-  const [modal, setModal] = useState(false);
+interface IModalGrocery {
+  open: boolean;
+  toggle: () => void;
+  //Agregar otra propiedad que sea Grocery: any Crear una interfaz a el usario para que le pase la información
+}
 
-  const toggle = () => setModal(!modal);
+
+export const ModalGrocery: FC<IModalGrocery> = ({open, toggle}): JSX.Element => {  
+  const handleToggle = () => {
+    toggle()
+  }
 
   return (
     <div>
-      <Button color="#FF9300" onClick={toggle}>Revisar</Button>
-      <Modal isOpen={modal} toggle={toggle}>
-        <ModalHeader toggle={toggle}>
+      <Modal isOpen={ open } toggle={handleToggle}>
+        <ModalHeader toggle={handleToggle}>
             
         </ModalHeader>
         <ModalBody>
@@ -29,8 +35,8 @@ export const ModalGrocery: FC = (): JSX.Element => {
             </Typography>
         </ModalBody>
         <ModalFooter>
-            <Button variant="contained" style = {{backgroundColor:"#542463", marginRight: "20px"}} onClick={toggle}>ELIMINAR</Button>{' '}
-            <Button variant="contained" style = {{backgroundColor:"#F3071E"}} onClick={toggle}>EDITAR</Button>  
+            <Button variant="contained" style = {{backgroundColor:"#542463", marginRight: "20px"}} onClick={handleToggle}>ELIMINAR</Button>{' '}
+            <Button variant="contained" style = {{backgroundColor:"#F3071E"}} onClick={handleToggle}>EDITAR</Button>  
         </ModalFooter>
       </Modal>
     </div>

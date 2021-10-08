@@ -7,6 +7,7 @@ import User from '../assets/user.png';
 import { styled} from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import { useHistory } from "react-router-dom";
+import { ModalUser } from '../modals/modal-user.component';
 import './admin-users.styles.css';
 
 const Search = styled('div')(({ theme }) => ({
@@ -141,6 +142,7 @@ export const AdminUserComponent: FC = (): JSX.Element => {
                         <Button 
                         variant="text"
                         style = {{color: '#FF9300'}}
+                        onClick = { toggle }
                         >
                         visualizar
                         </Button>
@@ -194,7 +196,7 @@ export const AdminUserComponent: FC = (): JSX.Element => {
                 </Card> 
                 
             </Grid>
-
+        <ModalUser open = { modal } toggle = { toggle } />
         </Grid>
     );
 }

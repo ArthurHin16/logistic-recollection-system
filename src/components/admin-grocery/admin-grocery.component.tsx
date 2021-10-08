@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { Grid, AppBar, Toolbar, Typography, Button, Card, CardMedia} from '@mui/material';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import Logo from '../images/bamx-oficial.png';
@@ -7,6 +7,7 @@ import Grocery from '../assets/almacen.png';
 import { styled} from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import { useHistory } from "react-router-dom";
+import { ModalGrocery } from '../modals/modal-grocery.component';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -60,6 +61,9 @@ export const AdminGroceryComponent: FC = (): JSX.Element => {
   function handleClick1() {
     history.push("/admin-newgrocery");
   }
+
+  const [modal, setModal] = useState(false);
+  const toggle = () => setModal(!modal);
 
     return(
         <Grid container>
@@ -135,13 +139,15 @@ export const AdminGroceryComponent: FC = (): JSX.Element => {
                         </Typography>
                         <Button 
                         variant="text"
-                        style = {{color: '#FF9300'}}>
+                        style = {{color: '#FF9300'}}
+                        onClick = { toggle }>
                         visualizar
                         </Button>
                     </Grid>
                 </Card>  
             </Grid>
-           
+
+          <ModalGrocery open = { modal } toggle = { toggle }/>
         </Grid>
     );
 }

@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { Grid, AppBar, Toolbar, Typography, Button, Card, CardMedia} from '@mui/material';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import Logo from '../images/bamx-oficial.png';
@@ -6,8 +6,11 @@ import SearchIcon from '@mui/icons-material/Search';
 import Store from '../assets/tienda.png';
 import { styled} from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
-import './admin-stores.styles.css';
 import { useHistory } from "react-router-dom";
+import { ModalStore } from '../modals/modal-store.component';
+import './admin-stores.styles.css';
+
+
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -61,6 +64,9 @@ export const AdminStoresComponent: FC = (): JSX.Element => {
   function handleClick1() {
     history.push("/admin-newstore");
   }
+  //modal
+  const [modal, setModal] = useState(false);
+  const toggle = () => setModal(!modal);
 
     return(
         <Grid container>
@@ -136,13 +142,16 @@ export const AdminStoresComponent: FC = (): JSX.Element => {
                         </Typography>
                         <Button 
                         variant="text"
-                        style = {{color: '#FF9300'}}>
+                        style = {{color: '#FF9300'}}
+                        onClick = { toggle }
+                        >
                         visualizar
                         </Button>
                     </Grid>
                 </Card>  
             </Grid>
            
+           <ModalStore open = { modal } toggle = { toggle }/>
         </Grid>
     );
 }
