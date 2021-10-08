@@ -13,6 +13,8 @@ import { RoutesRoute } from './pages/routes.route';
 import { ModalUser } from './components/modals/modal-user.component'
 import { ModalStore } from './components/modals/modal-store.component';
 import { ModalGrocery } from './components/modals/modal-grocery.component';
+import { DeliveryRequestRoute } from './pages/delivery-request.route';
+import { AssignWarehouseRoute } from './pages/assign-warehouse.route';
 
 
 
@@ -35,6 +37,8 @@ export const App: FC = (): JSX.Element => {
           <Route path='/modal' component = { ModalUser }/>
           <Route path='/modal2' component = { ModalStore }/>
           <Route path='/modal3' component = { ModalGrocery }/>
+          <Route path='/delivery-requests' component ={DeliveryRequestRoute} />
+          <Route path='/assign-warehouse' component = {AssignWarehouseRoute} />
         </Switch>
     </BrowserRouter>
   );

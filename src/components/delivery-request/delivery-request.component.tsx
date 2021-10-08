@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {FC} from 'react';
-import './routes.styles.css'
+import './delivery-request.styles.css'
 import { Grid, Paper, Button,AppBar,Toolbar } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Logo from '../images/bamx-oficial.png';
@@ -21,7 +21,7 @@ import { useState } from 'react';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
+    backgroundColor: "#ffffff",
     color: theme.palette.common.white,
     width: 300,
   },
@@ -65,12 +65,7 @@ const rows = [
 
 ];
 
-export const RoutesComponent: FC = (): JSX.Element => {
-    const [age, setAge] = React.useState('');
-
-  const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value as string);
-  };
+export const DeliveryRequestComponent: FC = (): JSX.Element => {
 
     return(
         <Grid container>
@@ -85,21 +80,18 @@ export const RoutesComponent: FC = (): JSX.Element => {
                     </Typography>
                     <Button style = {{color: '#542463'}} size="medium">Cerrar sesión <ExitToAppIcon/></Button>
                 </Toolbar>
-                <Grid container xs ={3} position='relative' className='Gridbajo'>
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} color='#000' align='center' id='title'>
-                        RUTAS
+                        SOLICITUDES DE ENTREGA
                 </Typography>
-                <Button variant="contained" className='botonespontaneo' style={{background: '#FF9300'}}>Agregar donativo espontáneo</Button>
-                </Grid>
             </AppBar>
 
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
                     <TableHead>
                         <TableRow >
-                            <StyledTableCell id='encabezado' align="center">ID RUTA</StyledTableCell>
-                            <StyledTableCell align="center" id='encabezado'>Descripción</StyledTableCell>
-                            <StyledTableCell align="center" id='encabezado' ></StyledTableCell>
+                            <StyledTableCell id='encabezado2' align="center">Operador</StyledTableCell>
+                            <StyledTableCell align="center" id='encabezado2'>Tienda</StyledTableCell>
+                            <StyledTableCell align="center" id='encabezado2' ></StyledTableCell>
                         </TableRow>
                     </TableHead>
 
@@ -111,19 +103,7 @@ export const RoutesComponent: FC = (): JSX.Element => {
                             </StyledTableCell>
                             <StyledTableCell align="center">{row.ruta}</StyledTableCell>
                             <StyledTableCell align="center">
-                              <FormControl sx={{width: 200 }}>
-                              <InputLabel id="demo-simple-select-label">Seleccione usuario</InputLabel>
-                              <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                label="Age"
-                                onChange={handleChange}
-                              >
-                                <MenuItem value={10}>Ten</MenuItem>
-                                <MenuItem value={20}>Twenty</MenuItem>
-                                <MenuItem value={30}>Thirty</MenuItem>
-                              </Select>
-                            </FormControl>
+                                <Button variant = "contained" color = "error" className="botonasignarbodega" >Asignar bodega</Button>
                             </StyledTableCell>
                             </StyledTableRow>
                             ))}

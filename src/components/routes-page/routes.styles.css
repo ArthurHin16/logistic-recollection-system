@@ -16,3 +16,17 @@
     font-weight: bolder;
     border: 1px solid #000;
 }
+
+.Gridbajo{
+    left: 45%;
+    
+}
+
+.botonespontaneo{
+    display: flex;
+    position: relative;
+    width: 100px;
+    height: 80px;
+    left: 100%;
+    background: #FF9300;
+}

@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+*{
+    font-family: 'Roboto';
+}
+
+#title{
+    font-size: 48px;
+    color: black;
+}
+
+.contenedorNombres{
+    display: flex;
+}
+
+.nombreEmpleado{
+    display: flex;
+    position: relative;
+    left: 2%;
+    top: 2%;
+}
+
+.datosEmpleado{
+    font-size: 33px;
+}
+
+.btnVerUbicacion{
+    position: relative;
+    left:90%;
+    bottom: 50%;
+}
+.separaBoton{
+    position: relative;
+    right: 2%;
+}
+
+.botonesFinal{
+    position: relative;
+    display: flex;
+    left: 80%;
+}
