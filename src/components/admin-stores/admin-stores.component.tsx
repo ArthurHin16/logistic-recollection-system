@@ -1,14 +1,16 @@
-import { FC, useState } from 'react'
-import { Grid, AppBar, Toolbar, Typography, Button, Card, CardMedia} from '@mui/material';
+import { FC, useState, useEffect } from 'react'
+import { Grid, AppBar, Toolbar, Typography, Button } from '@mui/material';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import Logo from '../images/bamx-oficial.png';
 import SearchIcon from '@mui/icons-material/Search';
-import Store from '../assets/tienda.png';
 import { styled} from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import { useHistory } from "react-router-dom";
-import { ModalStore } from '../modals/modal-store.component';
 import './admin-stores.styles.css';
+import { CardStore } from '../cards/card-store.component';
+import { IStore } from '../../models/store.model'
+import axios from "axios";
+import { useSnackbar } from 'notistack';
 
 
 
@@ -64,9 +66,51 @@ export const AdminStoresComponent: FC = (): JSX.Element => {
   function handleClick1() {
     history.push("/admin-newstore");
   }
-  //modal
-  const [modal, setModal] = useState(false);
-  const toggle = () => setModal(!modal);
+
+  //REST API GET
+  const [store, setStore] = useState<IStore[]>([]);
+
+  const fetchStores = async() => {
+    const res = await fetch("http://localhost:5000/admin/ver-tiendas");
+    const items = await res.json();
+    const arr: IStore[] = [];
+    for (let item of items.data) {
+      arr.push(item);
+    }
+    setStore(arr);
+  }
+
+   useEffect(() => {
+    fetchStores();       
+         
+  },[store])
+
+  //REST API DELETE
+  const   { enqueueSnackbar }  = useSnackbar();
+
+  const deleteStore = (id: any) => {
+    axios
+      .delete(`http://localhost:5000/admin/eliminar-tienda/${id}`)
+      .then((response) => {
+        console.log("res from server: ", response);
+        enqueueSnackbar('Tienda Eliminada!', { 
+          variant: 'success',
+          resumeHideDuration: 2000,
+          anchorOrigin:
+              { horizontal: 'right', vertical: 'bottom' }
+  });
+      })
+      .catch((err) => {
+        console.log(err);
+        enqueueSnackbar('Error!', { 
+          variant: 'error',
+          resumeHideDuration: 2000,
+          anchorOrigin:
+              { horizontal: 'right', vertical: 'bottom' }
+  });
+      });
+  };
+
 
     return(
         <Grid container>
@@ -125,33 +169,21 @@ export const AdminStoresComponent: FC = (): JSX.Element => {
                 justifyContent="space-around"
                 alignItems="center"
                 xs = {12} sm = {12} md = {12}>
-                <Card>
-                    <Grid
-                        container 
-                        direction="column"
-                        justifyContent="center"
-                        alignItems="center">
-                        <CardMedia
-                            component="img"
-                            image= { Store }
-                            alt="tienda"
-                            style = {{width: '100px', height: '100px'}}
-                        />
-                        <Typography variant="h6" component="div" color='black' align='center'>
-                            Wal-Mart
-                        </Typography>
-                        <Button 
-                        variant="text"
-                        style = {{color: '#FF9300'}}
-                        onClick = { toggle }
-                        >
-                        visualizar
-                        </Button>
-                    </Grid>
-                </Card>  
+                  {/*Componente CARD*/}
+                {
+                  store && store.map((store: any) => (
+                    <div>
+                        <CardStore
+                        stores = { store }
+                        deleteStore = { deleteStore }
+                        />  
+                    </div>
+                      
+                  ))
+                }
             </Grid>
            
-           <ModalStore open = { modal } toggle = { toggle }/>
+           
         </Grid>
     );
 }

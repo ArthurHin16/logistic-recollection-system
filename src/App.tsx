@@ -21,6 +21,9 @@ import { CreateDonationRoute } from './pages/create-donation.route';
 
 
 
+import { AdminUserEditComponent } from './components/admin-userEdit/admin-user-edit.component';
+import { AdminStoreEditComponent } from './components/admin-storeEdit/admin-store-edit.component';
+import { AdminGroceryEditComponent } from './components/admin-groceryEdit/admin-grocery-edit.component';
 
 export const App: FC = (): JSX.Element => {
   return (
@@ -45,6 +48,9 @@ export const App: FC = (): JSX.Element => {
           <Route path='/coordinator-map' component ={CoordinatorMapRoute} /> 
           <Route path ='/coordinator-login' component={CoordinatorLoginRoute} />
           <Route path= '/create-donation' component = {CreateDonationRoute} />
+          <Route path='/user/:id/edit' component = { AdminUserEditComponent }/>
+          <Route path='/store/:id/edit' component = { AdminStoreEditComponent }/>
+          <Route path='/grocery/:id/edit' component = { AdminGroceryEditComponent }/>
         </Switch>
     </BrowserRouter>
   );

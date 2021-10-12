@@ -1,13 +1,17 @@
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { Grid, AppBar, Typography, Toolbar, Button } from '@mui/material'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import Logo from '../images/bamx-oficial.png';
 import { Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { useSnackbar } from 'notistack';
 import axios from 'axios';
+import { IGrocery } from '../../models/grocery.model';
 
-export const AdminAddGroceryComponent: FC = (): JSX.Element => {
+export const AdminGroceryEditComponent: FC = (): JSX.Element => {
+
+    const Parametros: any = useParams();
+
     let history = useHistory();
 
     function handleClick() {
@@ -19,14 +23,15 @@ export const AdminAddGroceryComponent: FC = (): JSX.Element => {
     }
 
     //Implementación del API
-    const [grocery, setGrocery] = useState({
+    const [grocery, setGrocery] = useState<IGrocery>({
+        id: "",
         nombre: "",
 	    direccion: "",
 	    municipio: "",
 	    telefono: ""
     });
 
-    const baseUrl = "http://localhost:5000/admin/crear-bodega";
+    const baseUrl = `http://localhost:5000/admin/editar-bodega/${grocery.id}`;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         console.log(e.target.value)
@@ -39,12 +44,25 @@ export const AdminAddGroceryComponent: FC = (): JSX.Element => {
     // Variable for show alerts
     const   { enqueueSnackbar }  = useSnackbar();
 
+    //API GET for ONE grocery
+    const fetchGrocery = async () => {
+        const res = await fetch(`http://localhost:5000/admin//ver-bodega/${Parametros.id}`);
+        const item = await res.json();
+        setGrocery(item.data[0]);
+        console.log(item.data[0]);
+        console.log(grocery);
+    };
+
+    useEffect(() => {
+        fetchGrocery();
+    }, []);
+
     const editData = () => {
         console.log(grocery);
-        axios.post(baseUrl, grocery)
+        axios.patch(baseUrl, grocery)
             .then(response => {
                 console.log('res from server: ', response)
-                enqueueSnackbar('Almácen Agregado!', { 
+                enqueueSnackbar('Almácen Modificado!', { 
                     variant: 'success',
                     resumeHideDuration: 2000,
                     anchorOrigin:
@@ -91,13 +109,13 @@ export const AdminAddGroceryComponent: FC = (): JSX.Element => {
                          <Col xs = { 6 } md = { 6 } lg = { 6 }>
                              <FormGroup>
                                  <Label for="b_ID">ID</Label>
-                                 <Input type="text" name="b_ID" id="ID_bodega" disabled/>
+                                 <Input type="text" name="b_ID" id="ID_bodega" disabled defaultValue = {grocery.id}/>
                              </FormGroup>
                          </Col>
                          <Col xs = { 6 } md = { 6 } lg = { 6 }>
                              <FormGroup>
                                  <Label for="b_nombre">Bodega</Label>
-                                 <Input type="text" name="nombre" id="bodega" onChange = { handleChange }/>
+                                 <Input type="text" name="nombre" id="bodega" onChange = { handleChange } defaultValue = {grocery.nombre as any}/>
                              </FormGroup>
                          </Col>
                      </Row>
@@ -105,13 +123,13 @@ export const AdminAddGroceryComponent: FC = (): JSX.Element => {
                          <Col xs = { 6 } md = { 6 } lg = { 6 }>
                              <FormGroup>
                                  <Label for="b_direccion">Dirección</Label>
-                                 <Input type="text" name="direccion" id="direccion" onChange = { handleChange }/>
+                                 <Input type="text" name="direccion" id="direccion" onChange = { handleChange } defaultValue = {grocery.direccion as any}/>
                              </FormGroup>
                          </Col>
                          <Col xs = { 6 } md = { 6 } lg = { 6 }>
                              <FormGroup>
                                  <Label for="b_municipio">Municipio</Label>
-                                 <Input type="text" name="municipio" id="municipio" onChange = { handleChange }/>
+                                 <Input type="text" name="municipio" id="municipio" onChange = { handleChange } defaultValue = {grocery.municipio as any}/>
                              </FormGroup>
                          </Col>
                      </Row>
@@ -119,7 +137,7 @@ export const AdminAddGroceryComponent: FC = (): JSX.Element => {
                          <Col xs = { 6 } md = { 6 } lg = { 6 }>
                              <FormGroup>
                                  <Label for="b_tel">Teléfono</Label>
-                                 <Input type="tel" name="telefono" id="telefono" onChange = { handleChange }/>
+                                 <Input type="tel" name="telefono" id="telefono" onChange = { handleChange } defaultValue = {grocery.telefono as any}/>
                              </FormGroup>
                          </Col>
                      </Row>

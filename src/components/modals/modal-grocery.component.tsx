@@ -1,18 +1,29 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { Typography } from '@mui/material';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { IGrocery } from '../../models/grocery.model'
+import { useHistory } from "react-router-dom";
 
 interface IModalGrocery {
   open: boolean;
   toggle: () => void;
-  //Agregar otra propiedad que sea Grocery: any Crear una interfaz a el usario para que le pase la información
+  grocery: IGrocery;
+  deleteGrocery: (id: any) => void;
 }
 
 
-export const ModalGrocery: FC<IModalGrocery> = ({open, toggle}): JSX.Element => {  
+export const ModalGrocery: FC<IModalGrocery> = ({open, toggle, grocery, deleteGrocery}): JSX.Element => {  
   const handleToggle = () => {
     toggle()
   }
+
+  // handleClick with the history to the edit with dynamic path
+  let history = useHistory();
+
+  function handleClick() {
+    history.push(`/grocery/${grocery.id}/edit`);
+  }
+
 
   return (
     <div>
@@ -21,22 +32,21 @@ export const ModalGrocery: FC<IModalGrocery> = ({open, toggle}): JSX.Element => 
             
         </ModalHeader>
         <ModalBody>
-            ID: <br></br>
-            Bodega: <br></br>
-            Dirección: <br></br>
-            Municipio: <br></br>
+          {`ID: ${grocery.id}`}<br></br>
+          {`Nombre: ${grocery.nombre}`}<br></br>
+          {`Dirección: ${grocery.direccion}`} <br></br>
+          {`Municipio: ${grocery.municipio}`} <br></br>
             <Typography
                 variant="body1" 
                 component="div" 
                 color='#A0A0A0' 
                 align='left'>
-                Teléfono: <br></br>
-                Encargado: <br></br>
+                {`Teléfono: ${grocery.telefono}`} <br></br>
             </Typography>
         </ModalBody>
         <ModalFooter>
-            <Button variant="contained" style = {{backgroundColor:"#542463", marginRight: "20px"}} onClick={handleToggle}>ELIMINAR</Button>{' '}
-            <Button variant="contained" style = {{backgroundColor:"#F3071E"}} onClick={handleToggle}>EDITAR</Button>  
+            <Button variant="contained" style = {{backgroundColor:"#542463", marginRight: "20px"}} onClick={() => deleteGrocery(grocery.id)}>ELIMINAR</Button>{' '}
+            <Button variant="contained" style = {{backgroundColor:"#F3071E"}} onClick={handleClick}>EDITAR</Button>  
         </ModalFooter>
       </Modal>
     </div>
