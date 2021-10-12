@@ -19,6 +19,8 @@ import FormControl from '@mui/material/FormControl';
 import Select, {SelectChangeEvent} from '@mui/material/Select';
 import { useState } from 'react';
 
+import { useHistory } from "react-router-dom";
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -72,12 +74,22 @@ export const RoutesComponent: FC = (): JSX.Element => {
     setAge(event.target.value as string);
   };
 
+    
+  let history = useHistory();
+
+  function handleClick() {
+    history.push("/coordinator");
+}
+
+function handleClick1() {
+    history.push("/create-donation");
+}
     return(
         <Grid container>
             <AppBar position="static" style={{background: '#F9F6FB', height: '30vh'} }>
                 <Toolbar>
                     <Grid container xs={3} sm={3} md = {3} lg = {2}>
-                        <img src = {Logo} width='100%'/> 
+                        <Button onClick={handleClick}><img src = {Logo} width='100%'/> </Button>
                     </Grid>
 
                     <Typography variant="h4" component="div" sx={{ flexGrow: 1 }} color='#FF9300' align='center'>
@@ -89,7 +101,7 @@ export const RoutesComponent: FC = (): JSX.Element => {
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} color='#000' align='center' id='title'>
                         RUTAS
                 </Typography>
-                <Button variant="contained" className='botonespontaneo' style={{background: '#FF9300'}}>Agregar donativo espontáneo</Button>
+                <Button onClick={handleClick1} variant="contained" className='botonespontaneo' style={{background: '#FF9300'}}>Agregar donativo espontáneo</Button>
                 </Grid>
             </AppBar>
 

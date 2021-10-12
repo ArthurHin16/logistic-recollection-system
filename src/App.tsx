@@ -15,6 +15,9 @@ import { ModalStore } from './components/modals/modal-store.component';
 import { ModalGrocery } from './components/modals/modal-grocery.component';
 import { DeliveryRequestRoute } from './pages/delivery-request.route';
 import { AssignWarehouseRoute } from './pages/assign-warehouse.route';
+import { CoordinatorMapRoute } from './pages/coordinator-map.route';
+import { CoordinatorLoginRoute } from './pages/coordinator-login.route';
+import { CreateDonationRoute } from './pages/create-donation.route';
 
 
 
@@ -39,6 +42,9 @@ export const App: FC = (): JSX.Element => {
           <Route path='/modal3' component = { ModalGrocery }/>
           <Route path='/delivery-requests' component ={DeliveryRequestRoute} />
           <Route path='/assign-warehouse' component = {AssignWarehouseRoute} />
+          <Route path='/coordinator-map' component ={CoordinatorMapRoute} /> 
+          <Route path ='/coordinator-login' component={CoordinatorLoginRoute} />
+          <Route path= '/create-donation' component = {CreateDonationRoute} />
         </Switch>
     </BrowserRouter>
   );

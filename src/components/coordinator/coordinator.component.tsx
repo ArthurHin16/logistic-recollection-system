@@ -6,8 +6,20 @@ import Logo from '../images/bamx-oficial.png';
 import Ruta from '../assets/ruta.png';
 import Camion from '../assets/camion-de-reparto.png';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import { useHistory } from "react-router-dom";
+
 
 export const CoordinatorComponent: FC = (): JSX.Element => {
+    let history = useHistory();
+
+    function handleClick() {
+        history.push("/routes");
+    }
+
+    function handleClick2() {
+        history.push("/delivery-requests");
+    }
+
     return(
         <Grid container>
                 <AppBar position="static" style={{background: '#F9F6FB', height: '25vh'} }>
@@ -27,13 +39,13 @@ export const CoordinatorComponent: FC = (): JSX.Element => {
             </AppBar>
             
             <Grid container className = "down">
-                <Button>
+                <Button onClick={handleClick}>
                     <Paper elevation= {3} className= "card" >
                         <img src = {Ruta} alt = "Ruta" className="imagecard"/>
                         <p className="cardText">Rutas</p>
                     </Paper>
                 </Button>
-                <Button>
+                <Button onClick={handleClick2}>
                     <Paper elevation= {3} className= "card">
                         <img src = {Camion} alt = "Camion" className="imagecard"/>
                         <p className="cardText">Solicitudes de entrega</p>

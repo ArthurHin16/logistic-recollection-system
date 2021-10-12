@@ -18,6 +18,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, {SelectChangeEvent} from '@mui/material/Select';
 import { useState } from 'react';
+import { useHistory } from "react-router-dom";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -66,13 +67,23 @@ const rows = [
 ];
 
 export const DeliveryRequestComponent: FC = (): JSX.Element => {
+  
+  let history = useHistory();
+
+  function handleClick() {
+    history.push("/coordinator");
+}
+
+function handleClick1() {
+    history.push("/assign-warehouse");
+}
 
     return(
         <Grid container>
             <AppBar position="static" style={{background: '#F9F6FB', height: '30vh'} }>
                 <Toolbar>
                     <Grid container xs={3} sm={3} md = {3} lg = {2}>
-                        <img src = {Logo} width='100%'/> 
+                        <Button onClick={handleClick}><img src = {Logo} width='100%'/> </Button>
                     </Grid>
 
                     <Typography variant="h4" component="div" sx={{ flexGrow: 1 }} color='#FF9300' align='center'>
@@ -103,7 +114,7 @@ export const DeliveryRequestComponent: FC = (): JSX.Element => {
                             </StyledTableCell>
                             <StyledTableCell align="center">{row.ruta}</StyledTableCell>
                             <StyledTableCell align="center">
-                                <Button variant = "contained" color = "error" className="botonasignarbodega" >Asignar bodega</Button>
+                                <Button onClick = {handleClick1} variant = "contained" color = "error" className="botonasignarbodega" >Asignar bodega</Button>
                             </StyledTableCell>
                             </StyledTableRow>
                             ))}

@@ -45,46 +45,18 @@
 
 }
 
-.labelsyBotones{
-    display: flex;
-    justify-content: space-around;
-}
-
-.valoresCantidad{
-    display: flex;
-    position: relative;
-    top: 38px;
-}
-
-
 .labels{
+    font-size: 36px;
     display: flex;
+    flex-direction: column;
     position: relative;
     left: 2%;
-    width: 100px;
+    width: 237px;
 }
 
 .inputs{
     width: 100px;
 }
-
-.BotonAgregaBodega{
-    position: relative;
-    left: 400px;
-}
-
-.Formasignar{
-    position: relative;
-    top: 40px;
-
-}
-
-.ContenedorForm{
-    position: relative;
-    top: 50px;
-    left: 30px;
-}
-
 .inputDisabled{
     position: relative;
     width: 154px;
