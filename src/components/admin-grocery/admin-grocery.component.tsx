@@ -1,13 +1,16 @@
-import { FC, useState } from 'react'
-import { Grid, AppBar, Toolbar, Typography, Button, Card, CardMedia} from '@mui/material';
+import { FC, useState, useEffect } from 'react'
+import { Grid, AppBar, Toolbar, Typography, Button } from '@mui/material';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import Logo from '../images/bamx-oficial.png';
 import SearchIcon from '@mui/icons-material/Search';
-import Grocery from '../assets/almacen.png';
 import { styled} from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import { useHistory } from "react-router-dom";
-import { ModalGrocery } from '../modals/modal-grocery.component';
+import { CardGrocery } from '../cards/card-grocery.component';
+import { IGrocery } from '../../models/grocery.model'
+import axios from "axios";
+import { useSnackbar } from 'notistack';
+
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -62,8 +65,51 @@ export const AdminGroceryComponent: FC = (): JSX.Element => {
     history.push("/admin-newgrocery");
   }
 
-  const [modal, setModal] = useState(false);
-  const toggle = () => setModal(!modal);
+  //REST API GET
+  const [groceries, setGroceries] = useState<IGrocery[]>([]);
+
+  const fetchGrocery = async() => {
+    const res = await fetch("http://localhost:5000/admin/ver-bodegas");
+    const items = await res.json();
+    const arr: IGrocery[] = [];
+    for (let item of items.data) {
+      console.log(item);
+      arr.push(item);
+    }
+    setGroceries(arr);
+  }
+
+   useEffect(() => {
+    fetchGrocery();       
+         
+  },[groceries])
+
+  //REST API DELETE
+  const   { enqueueSnackbar }  = useSnackbar();
+
+  const deleteGrocery = (id: any) => {
+    axios
+      .delete(`http://localhost:5000/admin//eliminar-bodega/${id}`)
+      .then((response) => {
+        console.log("res from server: ", response);
+        enqueueSnackbar('Bodega Eliminada!', { 
+          variant: 'success',
+          resumeHideDuration: 2000,
+          anchorOrigin:
+              { horizontal: 'right', vertical: 'bottom' }
+  });
+      })
+      .catch((err) => {
+        console.log(err);
+        enqueueSnackbar('Error!', { 
+          variant: 'error',
+          resumeHideDuration: 2000,
+          anchorOrigin:
+              { horizontal: 'right', vertical: 'bottom' }
+  });
+      });
+  };
+
 
     return(
         <Grid container>
@@ -122,32 +168,19 @@ export const AdminGroceryComponent: FC = (): JSX.Element => {
                 justifyContent="space-around"
                 alignItems="center"
                 xs = {12} sm = {12} md = {12}>
-                <Card>
-                    <Grid
-                        container 
-                        direction="column"
-                        justifyContent="center"
-                        alignItems="center">
-                        <CardMedia
-                            component="img"
-                            image= { Grocery }
-                            alt="almacen"
-                            style = {{width: '100px', height: '100px'}}
-                        />
-                        <Typography variant="h6" component="div" color='black' align='center'>
-                            TLAHUAPAN
-                        </Typography>
-                        <Button 
-                        variant="text"
-                        style = {{color: '#FF9300'}}
-                        onClick = { toggle }>
-                        visualizar
-                        </Button>
-                    </Grid>
-                </Card>  
+                {/*Componente CARD*/}
+                {
+                  groceries && groceries.map((grocery: any) => (
+                    <div>
+                        <CardGrocery
+                        groceries = { grocery }
+                        deleteGrocery = { deleteGrocery }
+                        />  
+                    </div>
+                      
+                  ))
+                }       
             </Grid>
-
-          <ModalGrocery open = { modal } toggle = { toggle }/>
         </Grid>
     );
 }
