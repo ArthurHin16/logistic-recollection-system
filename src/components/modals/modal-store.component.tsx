@@ -1,18 +1,29 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { Grid } from '@mui/material';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle } from 'reactstrap';
+import { IStore } from '../../models/store.model'
+import { useHistory } from "react-router-dom";
 import Tienda from '../images/tienda.jpg'
+
 
 interface IModalStore {
   open: boolean;
   toggle: () => void;
-  //Agregar otra propiedad que sea Store: any Crear una interfaz a el usario para que le pase la información
+  store: IStore;
+  deleteStore: (id: any) => void;
 }
 
-export const ModalStore: FC<IModalStore> = ({open, toggle}): JSX.Element => {  
+export const ModalStore: FC<IModalStore> = ({open, toggle, store, deleteStore}): JSX.Element => {  
   const handleToggle = () => {
     toggle()
+  }
+
+  // handleClick with the history to the edit with dynamic path
+  let history = useHistory();
+
+  function handleClick() {
+    history.push(`/store/${store.id}/edit`);
   }
 
   return (
@@ -31,17 +42,17 @@ export const ModalStore: FC<IModalStore> = ({open, toggle}): JSX.Element => {
                 <Card>
                     <CardImg top width="100%" src={ Tienda }alt="Tienda" />
                     <CardBody>
-                    <CardTitle tag="h5">4544</CardTitle>
-                    <CardSubtitle tag="h6" className="mb-2 text-muted">Superama Ávila Camacho</CardSubtitle>
+                    <CardTitle tag="h5">{store.determinante}</CardTitle>
+                    <CardSubtitle tag="h6" className="mb-2 text-muted">{store.nombre}</CardSubtitle>
                     <CardText>
-                        Manuel Ávila Camacho #606 C.P 62170, Col. La Pradera, Cuernavaca
+                        {store.direccion}
                     </CardText>
                     </CardBody>
                 </Card>
             </ModalBody>
             <ModalFooter>
-                <Button variant="contained" style = {{backgroundColor:"#542463", marginRight: "20px"}} onClick={handleToggle}>ELIMINAR</Button>{' '}
-                <Button variant="contained" style = {{backgroundColor:"#F3071E"}} onClick={handleToggle}>EDITAR</Button>  
+                <Button variant="contained" style = {{backgroundColor:"#542463", marginRight: "20px"}} onClick = { () => deleteStore(store.id)}>ELIMINAR</Button>{' '}
+                <Button variant="contained" style = {{backgroundColor:"#F3071E"}} onClick={handleClick}>EDITAR</Button>  
             </ModalFooter>
           </Grid>  
       </Modal>

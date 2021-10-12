@@ -1,13 +1,18 @@
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { Grid, AppBar, Typography, Toolbar, Button } from '@mui/material'
+import { Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
+import { useHistory, useParams } from "react-router-dom";
+import { useSnackbar } from 'notistack';
+import { IStore } from '../../models/store.model';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import Logo from '../images/bamx-oficial.png';
-import { Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
-import { useHistory } from "react-router-dom";
 import axios from 'axios';
-import { useSnackbar } from 'notistack';
 
-export const AdminAddStoreComponent: FC = (): JSX.Element => {
+
+
+export const AdminStoreEditComponent: FC = (): JSX.Element => {
+
+    const Parametros: any = useParams();
 
     let history = useHistory();
 
@@ -20,7 +25,8 @@ export const AdminAddStoreComponent: FC = (): JSX.Element => {
     }
 
     //Implementación del API
-    const [store, setStore] = useState({
+    const [store, setStore] = useState<IStore>({
+        id: "",
         determinante: "",
 	    cadena: "",
 	    nombre: "",
@@ -29,7 +35,7 @@ export const AdminAddStoreComponent: FC = (): JSX.Element => {
 	    telefono: "",
     });
 
-    const baseUrl = "http://localhost:5000/admin/crear-tienda";
+    const baseUrl = `http://localhost:5000/admin/editar-tienda/${store.id}`;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         console.log(e.target.value)
@@ -42,12 +48,25 @@ export const AdminAddStoreComponent: FC = (): JSX.Element => {
     // Variable for show alerts
     const   { enqueueSnackbar }  = useSnackbar();
 
+    //API GET for ONE store
+    const fetchGrocery = async () => {
+        const res = await fetch(`http://localhost:5000/admin/ver-tienda/${Parametros.id}`);
+        const item = await res.json();
+        setStore(item.data[0]);
+        console.log(item.data[0]);
+        console.log(store);
+    };
+
+    useEffect(() => {
+        fetchGrocery();
+    }, []);
+
     const editData = () => {
         console.log(store);
-        axios.post(baseUrl, store)
+        axios.patch(baseUrl, store)
             .then(response => {
                 console.log('res from server: ', response)
-                enqueueSnackbar('Tienda Agregada!', { 
+                enqueueSnackbar('Tienda Modificada!', { 
                     variant: 'success',
                     resumeHideDuration: 2000,
                     anchorOrigin:
@@ -94,13 +113,13 @@ export const AdminAddStoreComponent: FC = (): JSX.Element => {
                             <Col xs = { 6 } md = { 6 } lg = { 6 }>
                                 <FormGroup>
                                     <Label for="s_determinante">Determinante</Label>
-                                    <Input type="text" name="determinante" id="determinante" onChange = { handleChange }/>
+                                    <Input type="text" name="determinante" id="determinante" onChange = { handleChange } defaultValue = {store.determinante as any}/>
                                 </FormGroup>
                             </Col>
                             <Col xs = { 6 } md = { 6 } lg = { 6 }>
                                 <FormGroup>
                                     <Label for="s_cadena">Cadena</Label>
-                                    <Input type="text" name="cadena" id="cadena" onChange = { handleChange }/>
+                                    <Input type="text" name="cadena" id="cadena" onChange = { handleChange } defaultValue = {store.cadena as any}/>
                                 </FormGroup>
                             </Col>
                         </Row>
@@ -108,7 +127,7 @@ export const AdminAddStoreComponent: FC = (): JSX.Element => {
                             <Col xs = { 12 } md = { 12 } lg = { 12 }>
                                 <FormGroup>
                                     <Label for="s_sucursal">Sucursal</Label>
-                                    <Input type="text" name="nombre" id="sucursal" onChange = { handleChange }/>
+                                    <Input type="text" name="nombre" id="sucursal" onChange = { handleChange } defaultValue = {store.nombre as any}/>
                                 </FormGroup>
                             </Col>
                         </Row>
@@ -116,13 +135,13 @@ export const AdminAddStoreComponent: FC = (): JSX.Element => {
                             <Col xs = { 6 } md = { 6 } lg = { 6 }>
                                 <FormGroup>
                                     <Label for="s_direccion">Dirección</Label>
-                                    <Input type="text" name="direccion" id="direccion" onChange = { handleChange }/>
+                                    <Input type="text" name="direccion" id="direccion" onChange = { handleChange } defaultValue = {store.direccion as any}/>
                                 </FormGroup>
                             </Col>
                             <Col xs = { 6 } md = { 6 } lg = { 6 }>
                                 <FormGroup>
                                     <Label for="s_municipio">Municipio</Label>
-                                    <Input type="text" name="municipio" id="municipio" onChange = { handleChange }/>
+                                    <Input type="text" name="municipio" id="municipio" onChange = { handleChange } defaultValue = {store.municipio as any}/>
                                 </FormGroup>
                             </Col>
                         </Row>
@@ -130,7 +149,7 @@ export const AdminAddStoreComponent: FC = (): JSX.Element => {
                             <Col xs = { 6 } md = { 6 } lg = { 6 }>
                                 <FormGroup>
                                     <Label for="s_tel">Teléfono</Label>
-                                    <Input type="tel" name="telefono" id="telefono" onChange = { handleChange }/>
+                                    <Input type="tel" name="telefono" id="telefono" onChange = { handleChange } defaultValue = {store.telefono as any}/>
                                 </FormGroup>
                             </Col>
                         </Row>

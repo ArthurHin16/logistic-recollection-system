@@ -1,17 +1,28 @@
-import { FC, useState } from 'react';
-import { Typography } from '@mui/material';
+import { FC } from 'react';
+import { Typography} from '@mui/material';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { IUser } from '../../models/user.model'
+import { useHistory } from "react-router-dom";
 
-
+//Interface with the function deleteUser
 interface IModalUser {
   open: boolean;
   toggle: () => void;
-  //Agregar otra propiedad que sea USER: any Crear una interfaz a el usario para que le pase la información
+  user: IUser;
+  deleteUser: (id: any) => void;
 }
 
-export const ModalUser: FC<IModalUser> = ({open, toggle}): JSX.Element => {  
+
+export const ModalUser: FC<IModalUser> = ({ open, toggle, user, deleteUser}): JSX.Element => {  
   const handleToggle = () => {
     toggle()
+  }
+
+  let history = useHistory();
+
+  // handleClick with the history to the edit with dynamic path
+  function handleClick() {
+    history.push(`/user/${user.id}/edit`);
   }
 
   return (
@@ -21,23 +32,22 @@ export const ModalUser: FC<IModalUser> = ({open, toggle}): JSX.Element => {
       
         </ModalHeader>
         <ModalBody>
-            ID Usuario: AL12 <br></br> {/*user.id*/}
-            Nombre completo: Arturo Hinojosa Reyna <br></br>
-            Rol: Almacenista
+        {`ID: ${user.id}`} <br></br> 
+        {`Nombre: ${user.nombre} ${user.apellidoPaterno} ${user.apellidoMaterno}`} <br></br>
+        {`Rol: ${user.puesto}`} 
             <Typography
                 variant="body1" 
                 component="div" 
                 color='#A0A0A0' 
                 align='left'>
-                Unidad/Almacén: TLAHUAPAN <br></br>
-                Télefono celular: 771 209 4638 <br></br>
-                Teléfono casa: 395 345 3821 <br></br>
-                Correo: example@itesm.mx <br></br>
+                {`Teléfono Celular: ${user.telefonoCelular}`}<br></br>
+                {`Teléfono Casa: ${user.telefonoCasa}`}<br></br>
+                {`Correo: ${user.correo}`}<br></br>
             </Typography>
         </ModalBody>
         <ModalFooter>
-            <Button variant="contained" style = {{backgroundColor:"#542463", marginRight: "20px"}} onClick={handleToggle}>ELIMINAR</Button>{' '}
-            <Button variant="contained" style = {{backgroundColor:"#F3071E"}} onClick={handleToggle}>EDITAR</Button>  
+            <Button variant="contained" style = {{backgroundColor:"#542463", marginRight: "20px"}} onClick={()=> deleteUser(user.id)} >ELIMINAR</Button>{' '}
+            <Button variant="contained" style = {{backgroundColor:"#F3071E"}} onClick={handleClick}>EDITAR</Button>  
         </ModalFooter>
       </Modal>
     </div>
