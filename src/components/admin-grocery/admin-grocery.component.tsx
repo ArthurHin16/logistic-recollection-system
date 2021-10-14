@@ -2,7 +2,6 @@ import { FC, useState, useEffect } from 'react'
 import { Grid, AppBar, Toolbar, Typography, Button } from '@mui/material';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import Logo from '../images/bamx-oficial.png';
-import SearchIcon from '@mui/icons-material/Search';
 import { styled} from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import { useHistory } from "react-router-dom";
@@ -10,7 +9,7 @@ import { CardGrocery } from '../cards/card-grocery.component';
 import { IGrocery } from '../../models/grocery.model'
 import axios from "axios";
 import { useSnackbar } from 'notistack';
-
+import './grocery.style.css'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -68,21 +67,27 @@ export const AdminGroceryComponent: FC = (): JSX.Element => {
   //REST API GET
   const [groceries, setGroceries] = useState<IGrocery[]>([]);
 
-  const fetchGrocery = async() => {
-    const res = await fetch("http://localhost:5000/admin/ver-bodegas");
+  const fetchGrocery = async(params: any) => {
+    const queryParams = {
+      ...params,
+    }
+
+    let queryString = Object.keys(queryParams).map((key) => {
+      return encodeURIComponent(key) + '=' + encodeURIComponent(queryParams[key])
+    }).join('&')
+
+    const res = await fetch(`http://localhost:5000/admin/ver-bodegas?${queryString}`);
     const items = await res.json();
     const arr: IGrocery[] = [];
     for (let item of items.data) {
-      console.log(item);
       arr.push(item);
     }
     setGroceries(arr);
   }
 
    useEffect(() => {
-    fetchGrocery();       
-         
-  },[groceries])
+    fetchGrocery('');           
+  },[])
 
   //REST API DELETE
   const   { enqueueSnackbar }  = useSnackbar();
@@ -109,6 +114,15 @@ export const AdminGroceryComponent: FC = (): JSX.Element => {
   });
       });
   };
+
+  // BUSCADOR *****
+  const [search, setSearch] = useState('');
+  function handleSearch(event: any) {
+    event.preventDefault();
+    fetchGrocery({
+        query: search
+    })
+  } 
 
 
     return(
@@ -150,15 +164,15 @@ export const AdminGroceryComponent: FC = (): JSX.Element => {
                         Agregar Bodega
                     </Button>
                     <Toolbar>   
-                        <Search>
-                            <SearchIconWrapper>
-                            <SearchIcon />
-                            </SearchIconWrapper>
-                            <StyledInputBase
-                                placeholder="Buscar"
-                                inputProps={{ 'aria-label': 'search' }}
-                            />
-                        </Search>
+                      <form onSubmit={handleSearch}>
+                        <input 
+                          type="text"
+                          placeholder="Introduce tu búsqueda"
+                          value={search}
+                          onChange={(e) => setSearch(e.target.value)}
+                        />
+                          <button id= "btnLog">Buscar</button>
+                      </form>
                     </Toolbar> 
             </Grid>
            

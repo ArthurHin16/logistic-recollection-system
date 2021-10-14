@@ -6,9 +6,11 @@ import axios from 'axios';
 import { ILogin } from '../../models/login.model';
 import { useHistory } from "react-router-dom";
 import { useSnackbar } from 'notistack';
+import Cookies from 'universal-cookie';
 
+const cookies = new Cookies();
 
-export const LoginComponent: FC = (): JSX.Element => {
+export const LoginComponent1: FC = (): JSX.Element => {
     //Variable para los estilos
     const classes = useStyles();
     //Funcion para guardar las cosas
@@ -23,9 +25,36 @@ export const LoginComponent: FC = (): JSX.Element => {
           ...login,
           [name]: value
         });
-      }
+
+    }
+
+   let history = useHistory();
+    const   { enqueueSnackbar }  = useSnackbar();
+
+   const login1 = () =>  {
+    axios.post('http://localhost:5000/admin/login', login)
+    .then((response) => {
+        console.log('res from server: ', response);
+        console.log('***** cookies: ', login.username);
+        if (response){
+            cookies.set('username', login.username, {path: "/"})
+            if(cookies.get('username')){
+                history.push(`/admin`);
+                enqueueSnackbar('Bienvenido!', { 
+                variant: 'success',
+                resumeHideDuration: 2000,
+                anchorOrigin:
+                    { horizontal: 'right', vertical: 'bottom' }
+                });
+            }
+            
+    }})
+    .catch(err => {
+        console.log(err);
+    })
+    }
     
-    //Login
+    /*Login
     const baseUrl = "http://localhost:5000/admin/personal";
     
     let history = useHistory();
@@ -51,7 +80,7 @@ export const LoginComponent: FC = (): JSX.Element => {
         .catch(error => {
             console.log(error);
         })
-    }
+    }*/
 
     return (
        <Grid container component = "main" className = {classes.root}>
@@ -95,7 +124,7 @@ export const LoginComponent: FC = (): JSX.Element => {
                                     fullWidth
                                     variant = 'contained'
                                     style = {{ backgroundColor: '#FF9300'}}
-                                    onClick = {()=>iniciarSesion()}
+                                    onClick = {()=>login1()}
                                 >
                                     Iniciar sesión
                                 </Button>

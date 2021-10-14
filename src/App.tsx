@@ -24,12 +24,13 @@ import { CreateDonationRoute } from './pages/create-donation.route';
 import { AdminUserEditComponent } from './components/admin-userEdit/admin-user-edit.component';
 import { AdminStoreEditComponent } from './components/admin-storeEdit/admin-store-edit.component';
 import { AdminGroceryEditComponent } from './components/admin-groceryEdit/admin-grocery-edit.component';
+import { LoginComponent1 } from './components/login/login1.component';
 
 export const App: FC = (): JSX.Element => {
   return (
     <BrowserRouter>
         <Switch>
-          <Route path='/' exact component = { LoginRoute }/>
+          <Route path='/' exact component = { LoginComponent1 }/>
           <Route path="/admin" component = { AdminHomeRoute }/>
           <Route path='/coordinator' component = {CoordinatorRoute}/>
           <Route path='/routes' component = {RoutesRoute}/>
