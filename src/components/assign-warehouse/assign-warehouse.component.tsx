@@ -5,17 +5,46 @@ import Typography from '@mui/material/Typography';
 import Logo from '../images/bamx-oficial.png';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import {Label, Input, Form, Row, Col} from 'reactstrap';
-import { FormAssignWarehouse } from './form-assign-warehouse.component';
 import { useHistory, useParams } from "react-router-dom";
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
 import * as React from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import { IAssignWarehouse1 } from '../../models/assign-warehouse1.model';
-
-
+import { IGrocery } from '../../models/grocery.model';
+import { IDelivery } from '../../models/delivery.model';
+import { useSnackbar } from 'notistack';
+import axios from 'axios';
 export const AssignWarehouseComponent: FC = (): JSX.Element => {
+
+
+    const baseUrl = "http://localhost:5000/coordinator/donacion-espontanea"
+
+    const   { enqueueSnackbar }  = useSnackbar();
+
+    function asignarBodega(){
+        if(show === false){
+            axios.post(baseUrl, delivery)
+            .then(response => {
+                console.log('res from server: ', response)
+                enqueueSnackbar('Asignacion de bodega creada', { 
+                    variant: 'success',
+                    resumeHideDuration: 2000,
+                    anchorOrigin:
+                        { horizontal: 'right', vertical: 'bottom' }
+            });
+            })
+            .catch(err => {
+                console.log('Hola', err);
+                enqueueSnackbar('Error!', { 
+                    variant: 'error',
+                    resumeHideDuration: 2000,
+                    anchorOrigin:
+                        { horizontal: 'right', vertical: 'bottom' }
+            });
+            })
+            
+        }
+    }
 
     const Parametros: any=useParams();
     const [show, setShow] = useState<boolean>(false)
@@ -33,11 +62,16 @@ export const AssignWarehouseComponent: FC = (): JSX.Element => {
         history.push("/delivery-requests");
     }
 
-    const [age, setAge] = React.useState('');
 
-    const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value as string);
-    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        console.log("hola", e.target.value)
+        setDelivery({
+          ...delivery, //Mantener todo lo que ya esta en la constante body
+          [e.target.name]: e.target.value
+      })
+        
+      };
 
     const [donation, setDonation] = useState<IAssignWarehouse1>({
         id: '',
@@ -60,6 +94,34 @@ export const AssignWarehouseComponent: FC = (): JSX.Element => {
   useEffect(() => {
     fetchDonacion();
   }, []);
+
+  const [bodegas, setBodegas] = useState<IGrocery[]>([]);
+
+  const fetchBodegas = async () => {
+    const res = await fetch("http://localhost:5000/coordinator/bodegas");
+    const items = await res.json();
+    const arr: IGrocery[] = [];
+    for (let item of items.data) {
+      arr.push(item);
+    }
+    setBodegas(arr);
+    console.log(arr);
+  };
+
+  useEffect(() => {
+    fetchBodegas();
+  }, [bodegas]);
+
+  const [delivery, setDelivery] = useState<IDelivery>({
+    idDonativo: Parametros.id, 
+    idBodega: '',
+    kg_frutas_verduras: donation.kg_frutas_verduras, 
+    kg_abarrotes: donation.kg_abarrotes,
+    kg_pan: donation.kg_pan,
+    kg_no_comestibles: donation.kg_no_comestibles, 
+    estatus: 'Pendiente',
+    fecha: '',
+});
 
     return(
         <Grid container>
@@ -125,45 +187,51 @@ export const AssignWarehouseComponent: FC = (): JSX.Element => {
 
             <Grid container className="ContenedorForm">
 
-                <Input type="select" >
-                    <option>Seleccionar bodega</option>
-
-                </Input>
-            <Grid container>
-                <Form>
-                    <Input className="Formasignar" type="text" placeholder = "Abarrotes" name="cant_abarrote" id="abarrote"/>
-                    <Input className="Formasignar" type="text" placeholder = "Fruta y verdura" name="cant_fruta" id="fruta"/>
-                    <Input className="Formasignar" type="text" placeholder = "Pan" name="cant_pan" id="pan"/>
-                    <Input className="Formasignar" type="text" placeholder = "No comestibles" name="cant_noComestible" id="NoComestible"/>
-                </Form>
-                
-            </Grid>
+                <Col xs={2}>
+                    <Input type="select" name = "idBodega" onChange ={handleChange}>
+                        <option>Seleccionar bodega</option>
+                        {bodegas && bodegas.map((bodega: any) =>(
+                            <option key = {bodega.id} value = {bodega.id}>
+                                {bodega.nombre}
+                                </option>
+                        ))}
+                    </Input>
+                </Col>
                 
                 {show &&(
+                    <React.Fragment>
+
+                
+                    <Grid container> 
+                    <Form>
+                        <Input className="Formasignar" type="text" placeholder = "Abarrotes" name="cant_abarrote" />
+                        <Input className="Formasignar" type="text" placeholder = "Fruta y verdura" name="cant_fruta" />
+                        <Input className="Formasignar" type="text" placeholder = "Pan" name="cant_pan" />
+                        <Input className="Formasignar" type="text" placeholder = "No comestibles" name="cant_noComestible"/>
+                    </Form>
+                    </Grid>
                     <Grid container className="ContenedorForm2">
-                    <FormAssignWarehouse />
+                        <Col xs ={2}>
+                            <Input type= "select">
+                                <option>Seleccionar bodega</option>
+                            </Input>
+                        </Col>
+                        <Form className="acomodoForm">
+                            <Input className="Formasignar" type="text" placeholder = "Abarrotes" name="cant_abarrote" />
+                            <Input className="Formasignar" type="text" placeholder = "Fruta y verdura" name="cant_fruta" />
+                            <Input className="Formasignar" type="text" placeholder = "Pan" name="cant_pan" />
+                            <Input className="Formasignar" type="text" placeholder = "No comestibles" name="cant_noComestible"/>
+                        </Form>
                      </Grid>
+                     </React.Fragment>
                 )}
-            {/*<FormControl sx={{width: 220, height:24 }}>
-                <InputLabel id="demo-simple-select-label">Seleccione una bodega</InputLabel>
-                <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    label="Age"
-                    onChange={handleChange}
-                                >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                </Select>
-                </FormControl>*/}
             </Grid>
 
             <Grid container className='botonesFinal'>
                 <Button onClick={handleClick2} variant='contained' style={{background: '#542463'}} className='separaBoton'>
                     Cancelar
                 </Button>
-                <Button variant='contained' style={{background: '#F3071E'}}>
+                <Button variant='contained' style={{background: '#F3071E'}} onClick = {asignarBodega}>
                     Guardar
                 </Button>
             </Grid>

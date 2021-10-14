@@ -7,10 +7,17 @@ import Ruta from '../assets/ruta.png';
 import Camion from '../assets/camion-de-reparto.png';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { useHistory } from "react-router-dom";
+import Cookies from 'universal-cookie';
 
-
+const cookies = new Cookies()
 export const CoordinatorComponent: FC = (): JSX.Element => {
     let history = useHistory();
+
+
+    function cerrarSesion(){
+        cookies.remove('username', {path: "/"})
+        window.location.href='./coordinator-login'
+    }
 
     function handleClick() {
         history.push("/routes");
@@ -32,7 +39,7 @@ export const CoordinatorComponent: FC = (): JSX.Element => {
                     <Typography variant="h4" component="div" sx={{ flexGrow: 1 }} color='#FF9300' align='center'>
                         Coordinador
                 </Typography>
-                <Button style = {{color: '#FF9300'}} size="medium">Cerrar sesión <ExitToAppIcon/></Button>
+                <Button style = {{color: '#FF9300'}} size="medium" onClick={cerrarSesion}>Cerrar sesión <ExitToAppIcon/></Button>
                 </Toolbar>
                 
                 

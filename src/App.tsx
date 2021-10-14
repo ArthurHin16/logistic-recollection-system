@@ -25,6 +25,7 @@ import { AdminUserEditComponent } from './components/admin-userEdit/admin-user-e
 import { AdminStoreEditComponent } from './components/admin-storeEdit/admin-store-edit.component';
 import { AdminGroceryEditComponent } from './components/admin-groceryEdit/admin-grocery-edit.component';
 import { LoginComponent1 } from './components/login/login1.component';
+import { EditRouteRoute } from './pages/edit-route.route';
 
 export const App: FC = (): JSX.Element => {
   return (
@@ -52,6 +53,7 @@ export const App: FC = (): JSX.Element => {
           <Route path='/user/:id/edit' component = { AdminUserEditComponent }/>
           <Route path='/store/:id/edit' component = { AdminStoreEditComponent }/>
           <Route path='/grocery/:id/edit' component = { AdminGroceryEditComponent }/>
+          <Route path='/edit-route/:id' component ={EditRouteRoute} />
         </Switch>
     </BrowserRouter>
   );

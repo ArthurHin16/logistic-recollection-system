@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {FC} from 'react';
-import './routes.styles.css'
 import { Grid, Paper, Button,AppBar,Toolbar } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Logo from '../images/bamx-oficial.png';
@@ -16,39 +15,17 @@ import { useSnackbar } from 'notistack';
 import { useState, useEffect } from 'react';
 import {IDeliveryRequest} from "../../models/delivery-request.model";
 import { Input, Label, FormGroup, Col } from 'reactstrap';  
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { IRoute1 } from '../../models/routes1.model';
 import axios from 'axios';
-import { ModalRoute } from '../modals/modal-route.component';
+import { IfStatement } from 'typescript';
+import { IStore } from '../../models/store.model';
+import { AnySrvRecord } from 'dns';
+import { IUser } from '../../models/user.model';
+import './edit-ruta.styles.css'
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-    width: 300,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
+export const EditRouteComponent: FC = (): JSX.Element => {
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  '&:nth-of-type(odd)': {
-    backgroundColor: "#ffffff",
-  },
-  // hide last border
-  '&:last-child td, &:last-child th': {
-    border: 0,
-  },
-}));
-
-
-
-export const RoutesComponent: FC = (): JSX.Element => {
-
-  const [modal, setModal] = useState(false);
-  
-  const toggle = () => setModal(!modal);
 
   const   { enqueueSnackbar }  = useSnackbar();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,20 +37,20 @@ export const RoutesComponent: FC = (): JSX.Element => {
     
   };
 
+  const Parametro: any = useParams();
 
 
 const [eruta, setEruta] = useState ({
-      id: "",
-      dia: "",
+      id: Parametro.id,
       idOperador: "",
 })
 
-function editar (id: any){
-  const baseUrl = `http://localhost:5000/coordinator/asignar-operador/${id}}`
+function editar (){
+  const baseUrl = `http://localhost:5000/coordinator/asignar-operador/${Parametro.id}}`
     axios.patch(baseUrl, eruta)
       .then(response => {
           console.log('res from server: ', response)
-          enqueueSnackbar('Tienda Modificada!', { 
+          enqueueSnackbar('Ruta Modificado!', { 
               variant: 'success',
               resumeHideDuration: 2000,
               anchorOrigin:
@@ -99,13 +76,16 @@ function editar (id: any){
     history.push("/coordinator");
 }
 
-function handleClick1() {
-    history.push("/create-donation");
+function handleClick2() {
+  history.push("/routes");
 }
 
-function handleClick2(id: any){
-  history.push(`/edit-route/${id}`)
+
+interface prueba{
+  id: any;
+  nombre: any
 }
+
 
 const [users, setUsers] = useState<IDeliveryRequest[]>([]);
 
@@ -125,22 +105,22 @@ const [users, setUsers] = useState<IDeliveryRequest[]>([]);
   }, [users]);
 
 
+  const [tiendas, setTiendas] = useState<prueba[]>([]);
 
-  const [rutas, setRutas] = useState<IRoute1[]>([])
-  const fetchRuta = async () => {
-    const res = await fetch("http://localhost:5000/coordinator/ruta-operador");
+  const fetchTiendas = async () => {
+    const res = await fetch(`http://localhost:5000/coordinator/ruta-tiendas/${Parametro.id}`);
     const items = await res.json();
-    const arr: IRoute1[] = [];
+    const arr: prueba[] = [];
     for (let item of items.data) {
       arr.push(item);
     }
-    setRutas(arr);
+    setTiendas(arr);
     console.log(arr);
   };
 
   useEffect(() => {
-    fetchRuta();
-  }, [rutas]);
+    fetchTiendas();
+  }, [tiendas]);
 
 
 
@@ -161,41 +141,47 @@ const [users, setUsers] = useState<IDeliveryRequest[]>([]);
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} color='#000' align='center' id='title'>
                         RUTAS
                 </Typography>
-                <Button onClick={handleClick1} variant="contained" className='botonespontaneo' style={{background: '#FF9300'}}>Agregar donativo espontáneo</Button>
                 </Grid>
             </AppBar>
-
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 700 }} aria-label="customized table">
-                    <TableHead>
-                        <TableRow >
-                            <StyledTableCell id='encabezado' align="center">ID RUTA</StyledTableCell>
-                            <StyledTableCell align="center" id='encabezado'>Descripción</StyledTableCell>
-                            <StyledTableCell align="center" id='encabezado' >Operador</StyledTableCell>
-                        </TableRow>
-                    </TableHead>
-
-                    <TableBody>
-                        {rutas.map((ruta) => (
-                            <StyledTableRow key={ruta.id} >
-                            <StyledTableCell component="th" scope="row" align="center">
-                                {ruta.id}
-                            </StyledTableCell>
-                            <StyledTableCell align="center">
-                              <Button variant="contained" style={{background: "#FF9300"}} onClick={()=>handleClick2(ruta.id)}>Ver detalle</Button>
-                
-
-                            </StyledTableCell>
-                            <StyledTableCell align="center">
-                              <Typography variant ="h6">{ruta.nombre}</Typography>
-                            </StyledTableCell>
-                            </StyledTableRow>
-                            
-                            ))}
-                            
-                    </TableBody>
-                </Table>
-            </TableContainer>
+          <Grid container className ="PrincipalContender">
+              <Grid container>
+              <Label className="titulos">ID Ruta: {Parametro.id} </Label>
+              </Grid>
+              <Grid container>
+              <Label className="titulos">Tiendas: </Label>
+              </Grid>
+              <Grid container className="contenedorTiendas">
+                  {tiendas.map((tienda: any)=>(
+                      <Grid container>
+                        <Typography className="subs">{tienda.nombre}</Typography>
+                      </Grid>
+                  ))}
+              </Grid>
+                <Grid container>
+                  <Col xs={2}>
+                  <Label className="titulos">Operador:</Label>
+                  <Input type= "select" name = "idOperador" onChange= {handleChange}>
+                      <option>
+                        Seleccionar operador
+                      </option>
+                      {users && users.map((users: any) => (
+                                            <option key = {users.id} value = {users.id}>
+                                                {users.nombre}
+                                            </option>
+                            ))
+                            }
+                  </Input>
+                  </Col>
+                </Grid>
+          </Grid>
+          <Grid container className='botonesFinal'>
+                <Button onClick={handleClick2} variant='contained' style={{background: '#542463'}} className='separaBoton'>
+                    Cancelar
+                </Button>
+                <Button variant='contained' style={{background: '#F3071E'}} onClick = {editar}>
+                    Guardar
+                </Button>
+            </Grid>
         </Grid>
     )
 }
