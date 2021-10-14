@@ -8,7 +8,7 @@ import { useHistory } from "react-router-dom";
 import { useSnackbar } from 'notistack';
 
 
-export const LoginComponent: FC = (): JSX.Element => {
+export const LoginComponent1: FC = (): JSX.Element => {
     //Variable para los estilos
     const classes = useStyles();
     //Funcion para guardar las cosas
@@ -23,9 +23,35 @@ export const LoginComponent: FC = (): JSX.Element => {
           ...login,
           [name]: value
         });
-      }
+
+    }
+
+   const login1 = ( ) =>  {
+        console.log('********SOY YO!!***:',login.username, login.contrasena)
+        const name = login.username;
+        const password = login.contrasena;
+        console.log('********SOY YO DESTRCUTURED!!***:',name, password)
+        axios({
+            url: 'http://localhost:5000/admin/login',
+            method: 'post',
+            data:{ 
+                name,
+                password
+            },
+            headers:{
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((result) => {
+            console.log('*********RESULT DE API', result)
+        })
+        .catch((result) => {
+            console.log('*********RESULT DE API MALO', result)
+            console.error('Credenciales invalidas')
+        })
+    }
     
-    //Login
+    /*Login
     const baseUrl = "http://localhost:5000/admin/personal";
     
     let history = useHistory();
@@ -51,7 +77,7 @@ export const LoginComponent: FC = (): JSX.Element => {
         .catch(error => {
             console.log(error);
         })
-    }
+    }*/
 
     return (
        <Grid container component = "main" className = {classes.root}>
@@ -95,7 +121,7 @@ export const LoginComponent: FC = (): JSX.Element => {
                                     fullWidth
                                     variant = 'contained'
                                     style = {{ backgroundColor: '#FF9300'}}
-                                    onClick = {()=>iniciarSesion()}
+                                    onClick = {()=>login1()}
                                 >
                                     Iniciar sesión
                                 </Button>
