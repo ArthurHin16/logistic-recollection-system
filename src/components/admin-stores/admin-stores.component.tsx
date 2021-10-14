@@ -2,7 +2,6 @@ import { FC, useState, useEffect } from 'react'
 import { Grid, AppBar, Toolbar, Typography, Button } from '@mui/material';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import Logo from '../images/bamx-oficial.png';
-import SearchIcon from '@mui/icons-material/Search';
 import { styled} from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import { useHistory } from "react-router-dom";
@@ -11,6 +10,7 @@ import { CardStore } from '../cards/card-store.component';
 import { IStore } from '../../models/store.model'
 import axios from "axios";
 import { useSnackbar } from 'notistack';
+import './admin.styles.css';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -173,7 +173,7 @@ export const AdminStoresComponent: FC = (): JSX.Element => {
                               value={search}
                               onChange={(e) => setSearch(e.target.value)}
                           />
-                          <button>Buscar</button>
+                          <button id= "btnLog">Buscar</button>
                       </form>
                     </Toolbar> 
             </Grid>

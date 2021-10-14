@@ -2,7 +2,6 @@ import { FC, useState, useEffect } from "react";
 import { Grid, AppBar, Toolbar, Typography, Button } from "@mui/material";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import Logo from "../images/bamx-oficial.png";
-import SearchIcon from "@mui/icons-material/Search";
 import { styled } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import { useHistory } from "react-router-dom";
@@ -70,8 +69,16 @@ export const AdminUserComponent: FC = (): JSX.Element => {
   //REST API GET
   const [users, setUsers] = useState<IUser[]>([]);
 
-  const fetchPersonal = async () => {
-    const res = await fetch("http://localhost:5000/admin/personal");
+  const fetchPersonal = async (params: any) => {
+    const queryParams = {
+      ...params,
+    }
+
+    let queryString = Object.keys(queryParams).map((key) => {
+      return encodeURIComponent(key) + '=' + encodeURIComponent(queryParams[key])
+    }).join('&')
+
+    const res = await fetch(`http://localhost:5000/admin/personal?${queryString}`);
     const items = await res.json();
     const arr: IUser[] = [];
     for (let item of items.data) {
@@ -81,8 +88,8 @@ export const AdminUserComponent: FC = (): JSX.Element => {
   };
 
   useEffect(() => {
-    fetchPersonal();
-  }, [users]);
+    fetchPersonal('');
+  }, []);
 
   //REST API DELETE
   // Variable for show alerts
@@ -110,6 +117,15 @@ export const AdminUserComponent: FC = (): JSX.Element => {
   });
       });
   };
+
+  // BUSCADOR *****
+  const [search, setSearch] = useState('');
+  function handleSearch(event: any) {
+    event.preventDefault();
+    fetchPersonal({
+        query: search
+    })
+  } 
 
   return (
     <Grid container>
@@ -162,15 +178,15 @@ export const AdminUserComponent: FC = (): JSX.Element => {
           NUEVO USUARIO
         </Button>
         <Toolbar>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Buscar"
-              inputProps={{ "aria-label": "search" }}
+          <form onSubmit={handleSearch}>
+            <input 
+              type="text"
+              placeholder="Introduce tu búsqueda"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
             />
-          </Search>
+            <button id= "btnLog">Buscar</button>
+          </form>
         </Toolbar>
       </Grid>
       <Grid
