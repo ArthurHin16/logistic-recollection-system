@@ -12,8 +12,6 @@ import { IStore } from '../../models/store.model'
 import axios from "axios";
 import { useSnackbar } from 'notistack';
 
-
-
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -70,20 +68,28 @@ export const AdminStoresComponent: FC = (): JSX.Element => {
   //REST API GET
   const [store, setStore] = useState<IStore[]>([]);
 
-  const fetchStores = async() => {
-    const res = await fetch("http://localhost:5000/admin/ver-tiendas");
+  const fetchStores = async(params: any) => {
+    const queryParams = {
+      ...params,
+    }
+
+    let queryString = Object.keys(queryParams).map((key) => {
+      return encodeURIComponent(key) + '=' + encodeURIComponent(queryParams[key])
+    }).join('&')
+
+    const res = await fetch(`http://localhost:5000/admin/ver-tiendas?${queryString}`);
     const items = await res.json();
     const arr: IStore[] = [];
     for (let item of items.data) {
       arr.push(item);
     }
+    console.log(arr)
     setStore(arr);
   }
 
    useEffect(() => {
-    fetchStores();       
-         
-  },[store])
+    fetchStores('');
+  },[])
 
   //REST API DELETE
   const   { enqueueSnackbar }  = useSnackbar();
@@ -111,7 +117,15 @@ export const AdminStoresComponent: FC = (): JSX.Element => {
       });
   };
 
-
+  // BUSCADOR
+  const [search, setSearch] = useState('');
+  function handleSearch(event: any) {
+    event.preventDefault();
+    fetchStores({
+        query: search
+    })
+  } 
+  
     return(
         <Grid container>
 
@@ -151,18 +165,17 @@ export const AdminStoresComponent: FC = (): JSX.Element => {
                         NUEVA TIENDA
                     </Button>
                     <Toolbar>   
-                        <Search>
-                            <SearchIconWrapper>
-                            <SearchIcon />
-                            </SearchIconWrapper>
-                            <StyledInputBase
-                                placeholder="Buscar"
-                                inputProps={{ 'aria-label': 'search' }}
-                            />
-                        </Search>
+                      <form onSubmit={handleSearch}>
+                          <input 
+                              type="text"
+                              placeholder="Introduce tu búsqueda"
+                              value={search}
+                              onChange={(e) => setSearch(e.target.value)}
+                          />
+                          <button>Buscar</button>
+                      </form>
                     </Toolbar> 
             </Grid>
-           
             <Grid 
                 container 
                 direction="row"

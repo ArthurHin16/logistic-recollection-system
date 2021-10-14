@@ -73,7 +73,6 @@ export const AdminGroceryComponent: FC = (): JSX.Element => {
     const items = await res.json();
     const arr: IGrocery[] = [];
     for (let item of items.data) {
-      console.log(item);
       arr.push(item);
     }
     setGroceries(arr);
