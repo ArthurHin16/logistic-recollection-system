@@ -6,7 +6,9 @@ import axios from 'axios';
 import { ILogin } from '../../models/login.model';
 import { useHistory } from "react-router-dom";
 import { useSnackbar } from 'notistack';
+import Cookies from 'universal-cookie';
 
+const cookies = new Cookies();
 
 export const LoginComponent1: FC = (): JSX.Element => {
     //Variable para los estilos
@@ -26,29 +28,30 @@ export const LoginComponent1: FC = (): JSX.Element => {
 
     }
 
-   const login1 = ( ) =>  {
-        console.log('********SOY YO!!***:',login.username, login.contrasena)
-        const name = login.username;
-        const password = login.contrasena;
-        console.log('********SOY YO DESTRCUTURED!!***:',name, password)
-        axios({
-            url: 'http://localhost:5000/admin/login',
-            method: 'post',
-            data:{ 
-                name,
-                password
-            },
-            headers:{
-                'Content-Type': 'application/json'
+   let history = useHistory();
+    const   { enqueueSnackbar }  = useSnackbar();
+
+   const login1 = () =>  {
+    axios.post('http://localhost:5000/admin/login', login)
+    .then((response) => {
+        console.log('res from server: ', response);
+        console.log('***** cookies: ', login.username);
+        if (response){
+            cookies.set('username', login.username, {path: "/"})
+            if(cookies.get('username')){
+                history.push(`/admin`);
+                enqueueSnackbar('Bienvenido!', { 
+                variant: 'success',
+                resumeHideDuration: 2000,
+                anchorOrigin:
+                    { horizontal: 'right', vertical: 'bottom' }
+                });
             }
-        })
-        .then((result) => {
-            console.log('*********RESULT DE API', result)
-        })
-        .catch((result) => {
-            console.log('*********RESULT DE API MALO', result)
-            console.error('Credenciales invalidas')
-        })
+            
+    }})
+    .catch(err => {
+        console.log(err);
+    })
     }
     
     /*Login
