@@ -2,7 +2,6 @@ import { FC, useState, useEffect } from 'react'
 import { Grid, AppBar, Toolbar, Typography, Button } from '@mui/material';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import Logo from '../images/bamx-oficial.png';
-import SearchIcon from '@mui/icons-material/Search';
 import { styled} from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import { useHistory } from "react-router-dom";
@@ -11,6 +10,7 @@ import { CardStore } from '../cards/card-store.component';
 import { IStore } from '../../models/store.model'
 import axios from "axios";
 import { useSnackbar } from 'notistack';
+import './admin.styles.css';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -68,6 +68,7 @@ export const AdminStoresComponent: FC = (): JSX.Element => {
   //REST API GET
   const [store, setStore] = useState<IStore[]>([]);
 
+  //const ***** BUSCADOR
   const fetchStores = async(params: any) => {
     const queryParams = {
       ...params,
@@ -88,8 +89,8 @@ export const AdminStoresComponent: FC = (): JSX.Element => {
   }
 
    useEffect(() => {
-    fetchStores('');
-  },[])
+    fetchStores(''); //STRING VACIO
+  },[]) //modificar arreglo
 
   //REST API DELETE
   const   { enqueueSnackbar }  = useSnackbar();
@@ -117,7 +118,7 @@ export const AdminStoresComponent: FC = (): JSX.Element => {
       });
   };
 
-  // BUSCADOR
+  // BUSCADOR *****
   const [search, setSearch] = useState('');
   function handleSearch(event: any) {
     event.preventDefault();
@@ -172,7 +173,7 @@ export const AdminStoresComponent: FC = (): JSX.Element => {
                               value={search}
                               onChange={(e) => setSearch(e.target.value)}
                           />
-                          <button>Buscar</button>
+                          <button id= "btnLog">Buscar</button>
                       </form>
                     </Toolbar> 
             </Grid>

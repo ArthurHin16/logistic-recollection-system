@@ -6,7 +6,9 @@ import axios from 'axios';
 import { ILogin } from '../../models/login.model';
 import { useHistory } from "react-router-dom";
 import { useSnackbar } from 'notistack';
+import Cookies from 'universal-cookie';
 
+const cookies = new Cookies();
 
 export const LoginComponent1: FC = (): JSX.Element => {
     //Variable para los estilos
@@ -26,21 +28,26 @@ export const LoginComponent1: FC = (): JSX.Element => {
 
     }
 
-    let history = useHistory();
+   let history = useHistory();
     const   { enqueueSnackbar }  = useSnackbar();
 
    const login1 = () =>  {
     axios.post('http://localhost:5000/admin/login', login)
-    .then(response => {
+    .then((response) => {
         console.log('res from server: ', response);
+        console.log('***** cookies: ', login.username);
         if (response){
-            history.push(`/admin`);
-            enqueueSnackbar('Bienvenido!', { 
+            cookies.set('username', login.username, {path: "/"})
+            if(cookies.get('username')){
+                history.push(`/admin`);
+                enqueueSnackbar('Bienvenido!', { 
                 variant: 'success',
                 resumeHideDuration: 2000,
                 anchorOrigin:
                     { horizontal: 'right', vertical: 'bottom' }
-            });
+                });
+            }
+            
     }})
     .catch(err => {
         console.log(err);
