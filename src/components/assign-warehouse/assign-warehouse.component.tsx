@@ -1,4 +1,4 @@
-import {FC, useState} from 'react';
+import {FC, useState, useEffect} from 'react';
 import './assign-warehouse.styles.css'
 import { Grid, Paper, Button,AppBar,Toolbar} from '@mui/material';
 import Typography from '@mui/material/Typography';
@@ -6,16 +6,18 @@ import Logo from '../images/bamx-oficial.png';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import {Label, Input, Form, Row, Col} from 'reactstrap';
 import { FormAssignWarehouse } from './form-assign-warehouse.component';
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import * as React from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
+import { IAssignWarehouse1 } from '../../models/assign-warehouse1.model';
 
 
 export const AssignWarehouseComponent: FC = (): JSX.Element => {
 
+    const Parametros: any=useParams();
     const [show, setShow] = useState<boolean>(false)
     let history = useHistory();
 
@@ -23,8 +25,8 @@ export const AssignWarehouseComponent: FC = (): JSX.Element => {
         history.push("/coordinator");
     }
 
-    function handleClick1() {
-        history.push("/coordinator-map");
+    function handleClick1(operador: any) {
+        history.push(`/coordinator-map/${operador}`);
     }
 
     function handleClick2() {
@@ -37,12 +39,27 @@ export const AssignWarehouseComponent: FC = (): JSX.Element => {
     setAge(event.target.value as string);
     };
 
-    function cambiarShow(){
-        /*<Grid container>
-            <FormAssignWarehouse />
-        </Grid>*/
-        setShow(false)
-    }
+    const [donation, setDonation] = useState<IAssignWarehouse1>({
+        id: '',
+        nombre: '',
+        apellidoPaterno: '',
+        apellidoMaterno: '',
+        kg_frutas_verduras: '',
+        kg_pan: '',
+        kg_abarrotes: '',
+        kg_no_comestibles: ''
+    });
+
+  const fetchDonacion = async () => {
+    const res = await fetch(`http://localhost:5000/coordinator/detalles-entrega/${Parametros.id}`);
+    const item = await res.json();    
+    setDonation(item.data[0]);
+    console.log(item.data[0]);
+  };
+
+  useEffect(() => {
+    fetchDonacion();
+  }, []);
 
     return(
         <Grid container>
@@ -64,16 +81,13 @@ export const AssignWarehouseComponent: FC = (): JSX.Element => {
             <Grid container className = "contenedorNombres">
                 <Grid container style={{display: 'flex'}} className='nombreEmpleado'>
                     <Grid container>
-                        <Label className = "datosEmpleado">ID empleado:</Label>
+                        <Label className = "datosEmpleado">ID empleado: {donation.id}</Label>
                     </Grid>
                     <Grid container>
-                        <Label className = "datosEmpleado">Nombre empleado:</Label>
-                    </Grid>
-                    <Grid container>
-                        <Label className = "datosEmpleado">ID ruta:</Label>
+                        <Label className = "datosEmpleado">Nombre empleado: {donation.nombre} {donation.apellidoPaterno}</Label>
                     </Grid>
                 </Grid>
-                <Button onClick={handleClick1} style={{background: '#FF9300', color: '#ffffff'}} className = 'btnVerUbicacion'>Ver ubicacion</Button>
+                <Button onClick={()=>handleClick1(donation.id)} style={{background: '#FF9300', color: '#ffffff'}} className = 'btnVerUbicacion'>Ver ubicacion</Button>
             </Grid>
 
             <Grid container className="labelsYBotones">
@@ -85,25 +99,24 @@ export const AssignWarehouseComponent: FC = (): JSX.Element => {
                <Grid container className="valoresCantidad">
                    <Grid container >
                         <Typography className="labels" variant='h6' >Abarrote</Typography>
-                        <Input className= "inputs" value={30} disabled/> 
+                        <Input className= "inputs" value={donation.kg_abarrotes} disabled/> 
                    </Grid>
                     <Grid container>
                         <Typography className="labels" variant='h6'>Frutas y verduras</Typography>
-                        <Input className= "inputs" value={30} disabled/>  
+                        <Input className= "inputs" value={donation.kg_frutas_verduras} disabled/>  
                     </Grid>
                     
                     <Grid container>
                         <Typography className="labels" variant='h6'>Pan</Typography>
-                        <Input className= "inputs" value={30} disabled/> 
+                        <Input className= "inputs" value={donation.kg_pan} disabled/> 
                     </Grid>
                     <Grid container >
                         <Typography className="labels" variant='h6'>No comestibles</Typography>
-                        <Input className= "inputs" value={30} disabled/> 
+                        <Input className= "inputs" value={donation.kg_no_comestibles} disabled/> 
                     </Grid>
                    
                     <Button className= "BotonAgregaBodega" style = {{background: '#FF9300', color: '#ffffff'}} 
                     onClick={()=>setShow(true)}>Agregar Bodega</Button>  
-                    {()=>cambiarShow()}
                </Grid>
             </Grid>
 
@@ -111,12 +124,23 @@ export const AssignWarehouseComponent: FC = (): JSX.Element => {
 
 
             <Grid container className="ContenedorForm">
-                <Grid container>
-                    <FormAssignWarehouse />
-                </Grid>
+
+                <Input type="select" >
+                    <option>Seleccionar bodega</option>
+
+                </Input>
+            <Grid container>
+                <Form>
+                    <Input className="Formasignar" type="text" placeholder = "Abarrotes" name="cant_abarrote" id="abarrote"/>
+                    <Input className="Formasignar" type="text" placeholder = "Fruta y verdura" name="cant_fruta" id="fruta"/>
+                    <Input className="Formasignar" type="text" placeholder = "Pan" name="cant_pan" id="pan"/>
+                    <Input className="Formasignar" type="text" placeholder = "No comestibles" name="cant_noComestible" id="NoComestible"/>
+                </Form>
+                
+            </Grid>
                 
                 {show &&(
-                    <Grid container className="ContenedorForm">
+                    <Grid container className="ContenedorForm2">
                     <FormAssignWarehouse />
                      </Grid>
                 )}

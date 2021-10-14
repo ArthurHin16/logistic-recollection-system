@@ -17,8 +17,10 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, {SelectChangeEvent} from '@mui/material/Select';
-import { useState } from 'react';
-import { useHistory } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { useHistory, useParams } from "react-router-dom";
+import axios from 'axios'; // Importar axios
+import { IDeliveryRequest } from "../../models/delivery-request.model";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -41,42 +43,41 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(
-  id: number,
-  ruta: string,
-) {
-  return {id, ruta};
-}
-
-const rows = [
-  createData(1, 'Frozen yoghurt'),
-  createData(2, 'Frozen yoghurt'),
-  createData(3, 'Frozen yoghurt'),
-  createData(4, 'Frozen yoghurt'),
-  createData(5, 'Frozen yoghurt'),
-  createData(6, 'Frozen yoghurt'),
-  createData(7, 'Frozen yoghurt'),
-  createData(8, 'Frozen yoghurt'),
-  createData(9, 'Frozen yoghurt'),
-  createData(10, 'Frozen yoghurt'),
-  createData(11, 'Frozen yoghurt'),
-  createData(11, 'Frozen yoghurt'),
-  createData(12, 'Frozen yoghurt'),
-  createData(13, 'Frozen yoghurt'),
-
-];
 
 export const DeliveryRequestComponent: FC = (): JSX.Element => {
-  
+  const [operadores, setOperadores] = useState([]); 
   let history = useHistory();
 
+  const parametros: any = useParams();
+
+  
   function handleClick() {
     history.push("/coordinator");
 }
 
-function handleClick1() {
-    history.push("/assign-warehouse");
+function handleClick1(operadores: any) {
+    history.push(`/assign-warehouse/${operadores}`);
 }
+
+const [users, setUsers] = useState<IDeliveryRequest[]>([]);
+
+  const fetchPersonal = async () => {
+    const res = await fetch("http://localhost:5000/coordinator/donativos");
+    const items = await res.json();
+    const arr: IDeliveryRequest[] = [];
+    for (let item of items.data) {
+      arr.push(item);
+    }
+    setUsers(arr);
+    console.log(arr);
+  };
+
+  useEffect(() => {
+    fetchPersonal();
+  }, [users]);
+
+
+
 
     return(
         <Grid container>
@@ -89,7 +90,7 @@ function handleClick1() {
                     <Typography variant="h4" component="div" sx={{ flexGrow: 1 }} color='#FF9300' align='center'>
                         Coordinador
                     </Typography>
-                    <Button style = {{color: '#542463'}} size="medium">Cerrar sesión <ExitToAppIcon/></Button>
+                    <Button style = {{color: '#FF9300'}} size="medium">Cerrar sesión <ExitToAppIcon/></Button>
                 </Toolbar>
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} color='#000' align='center' id='title'>
                         SOLICITUDES DE ENTREGA
@@ -100,21 +101,21 @@ function handleClick1() {
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
                     <TableHead>
                         <TableRow >
-                            <StyledTableCell id='encabezado2' align="center">Operador</StyledTableCell>
+                            <StyledTableCell id='encabezado2' align="center">Donativo</StyledTableCell>
                             <StyledTableCell align="center" id='encabezado2'>Tienda</StyledTableCell>
                             <StyledTableCell align="center" id='encabezado2' ></StyledTableCell>
                         </TableRow>
                     </TableHead>
 
                     <TableBody>
-                        {rows.map((row) => (
-                            <StyledTableRow key={row.id} >
+                        {users.map((operadores) => (
+                            <StyledTableRow key={operadores.id} >
                             <StyledTableCell component="th" scope="row" align="center">
-                                {row.id}
+                                {operadores.id}
                             </StyledTableCell>
-                            <StyledTableCell align="center">{row.ruta}</StyledTableCell>
+                            <StyledTableCell align="center">{operadores.nombre}</StyledTableCell>
                             <StyledTableCell align="center">
-                                <Button onClick = {handleClick1} variant = "contained" color = "error" className="botonasignarbodega" >Asignar bodega</Button>
+                                <Button onClick = {()=>handleClick1(operadores.id)} variant = "contained" color = "error" className="botonasignarbodega" >Asignar bodega</Button>
                             </StyledTableCell>
                             </StyledTableRow>
                             ))}

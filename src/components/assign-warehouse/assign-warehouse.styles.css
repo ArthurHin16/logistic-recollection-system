@@ -85,6 +85,13 @@
     left: 30px;
 }
 
+.ContenedorForm2{
+    position: relative;
+    left: 300px;
+    bottom: 175px;
+}
+
+
 .inputDisabled{
     position: relative;
     width: 154px;

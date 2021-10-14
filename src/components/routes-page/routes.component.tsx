@@ -12,14 +12,14 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, {SelectChangeEvent} from '@mui/material/Select';
-import { useState } from 'react';
-
+import { useSnackbar } from 'notistack';
+import { useState, useEffect } from 'react';
+import {IDeliveryRequest} from "../../models/delivery-request.model";
+import { Input, Label, FormGroup, Col } from 'reactstrap';  
 import { useHistory } from "react-router-dom";
+import { IRoute1 } from '../../models/routes1.model';
+import axios from 'axios';
+import { ModalRoute } from '../modals/modal-route.component';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -42,37 +42,55 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(
-  id: number,
-  ruta: string,
-) {
-  return {id, ruta};
-}
 
-const rows = [
-  createData(1, 'Frozen yoghurt'),
-  createData(2, 'Frozen yoghurt'),
-  createData(3, 'Frozen yoghurt'),
-  createData(4, 'Frozen yoghurt'),
-  createData(5, 'Frozen yoghurt'),
-  createData(6, 'Frozen yoghurt'),
-  createData(7, 'Frozen yoghurt'),
-  createData(8, 'Frozen yoghurt'),
-  createData(9, 'Frozen yoghurt'),
-  createData(10, 'Frozen yoghurt'),
-  createData(11, 'Frozen yoghurt'),
-  createData(11, 'Frozen yoghurt'),
-  createData(12, 'Frozen yoghurt'),
-  createData(13, 'Frozen yoghurt'),
-
-];
 
 export const RoutesComponent: FC = (): JSX.Element => {
-    const [age, setAge] = React.useState('');
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value as string);
+  const [modal, setModal] = useState(false);
+  
+  const toggle = () => setModal(!modal);
+
+  const   { enqueueSnackbar }  = useSnackbar();
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("hola", e.target.value)
+    setEruta({
+      ...eruta, //Mantener todo lo que ya esta en la constante body
+      [e.target.name]: e.target.value
+  })
+    
   };
+
+
+
+const [eruta, setEruta] = useState ({
+      id: "",
+      dia: "",
+      idOperador: "",
+})
+
+function editar (id: any){
+  const baseUrl = `http://localhost:5000/coordinator/asignar-operador/${id}}`
+    axios.patch(baseUrl, eruta)
+      .then(response => {
+          console.log('res from server: ', response)
+          enqueueSnackbar('Tienda Modificada!', { 
+              variant: 'success',
+              resumeHideDuration: 2000,
+              anchorOrigin:
+                  { horizontal: 'right', vertical: 'bottom' }
+      });
+      })
+      .catch(err => {
+          console.log(err);
+          enqueueSnackbar('Error!', { 
+              variant: 'error',
+              resumeHideDuration: 2000,
+              anchorOrigin:
+                  { horizontal: 'right', vertical: 'bottom' }
+      }); 
+})
+}
+
 
     
   let history = useHistory();
@@ -84,6 +102,45 @@ export const RoutesComponent: FC = (): JSX.Element => {
 function handleClick1() {
     history.push("/create-donation");
 }
+
+const [users, setUsers] = useState<IDeliveryRequest[]>([]);
+
+  const fetchPersonal = async () => {
+    const res = await fetch("http://localhost:5000/coordinator/operadores");
+    const items = await res.json();
+    const arr: IDeliveryRequest[] = [];
+    for (let item of items.data) {
+      arr.push(item);
+    }
+    setUsers(arr);
+    console.log(arr);
+  };
+
+  useEffect(() => {
+    fetchPersonal();
+  }, [users]);
+
+
+
+  const [rutas, setRutas] = useState<IRoute1[]>([])
+  const fetchRuta = async () => {
+    const res = await fetch("http://localhost:5000/coordinator/ruta-operador");
+    const items = await res.json();
+    const arr: IRoute1[] = [];
+    for (let item of items.data) {
+      arr.push(item);
+    }
+    setRutas(arr);
+    console.log(arr);
+  };
+
+  useEffect(() => {
+    fetchRuta();
+  }, [rutas]);
+
+
+  const inf = {info: ''}
+
     return(
         <Grid container>
             <AppBar position="static" style={{background: '#F9F6FB', height: '30vh'} }>
@@ -95,7 +152,7 @@ function handleClick1() {
                     <Typography variant="h4" component="div" sx={{ flexGrow: 1 }} color='#FF9300' align='center'>
                         Coordinador
                     </Typography>
-                    <Button style = {{color: '#542463'}} size="medium">Cerrar sesión <ExitToAppIcon/></Button>
+                    <Button style = {{color: '#FF9300'}} size="medium">Cerrar sesión <ExitToAppIcon/></Button>
                 </Toolbar>
                 <Grid container xs ={3} position='relative' className='Gridbajo'>
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} color='#000' align='center' id='title'>
@@ -116,29 +173,38 @@ function handleClick1() {
                     </TableHead>
 
                     <TableBody>
-                        {rows.map((row) => (
-                            <StyledTableRow key={row.id} >
+                        {rutas.map((ruta) => (
+                            <StyledTableRow key={ruta.id} >
                             <StyledTableCell component="th" scope="row" align="center">
-                                {row.id}
+                                {ruta.id}
                             </StyledTableCell>
-                            <StyledTableCell align="center">{row.ruta}</StyledTableCell>
                             <StyledTableCell align="center">
-                              <FormControl sx={{width: 200 }}>
-                              <InputLabel id="demo-simple-select-label">Seleccione usuario</InputLabel>
-                              <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                label="Age"
-                                onChange={handleChange}
-                              >
-                                <MenuItem value={10}>Ten</MenuItem>
-                                <MenuItem value={20}>Twenty</MenuItem>
-                                <MenuItem value={30}>Thirty</MenuItem>
-                              </Select>
-                            </FormControl>
+                              <Button variant="contained" style={{background: "#FF9300"}}  onClick= {toggle}>Ver detalle</Button>
+                              <ModalRoute  /*users*/
+                            open = { modal } 
+                            toggle = { toggle } 
+                              inf = { ruta.id }
+                            />
+
+                            </StyledTableCell>
+                            <StyledTableCell align="center">
+                            <Col xs ={12}>
+                              <Input type="select" name= "idOperador" onChange = {handleChange} >
+                            <option>{ruta.nombre}</option>
+                            {users && users.map((users: any) => (
+                                            <option key = {users.id} value = {users.id}>
+                                                {users.nombre}
+                                            </option>
+                            ))
+                            } 
+                        </Input>
+                        <Button variant = "contained" color= "error" onClick={editar}>Cambiar</Button>
+                        </Col>
                             </StyledTableCell>
                             </StyledTableRow>
+                            
                             ))}
+                            
                     </TableBody>
                 </Table>
             </TableContainer>

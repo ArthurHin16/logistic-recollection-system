@@ -44,8 +44,8 @@ export const App: FC = (): JSX.Element => {
           <Route path='/modal2' component = { ModalStore }/>
           <Route path='/modal3' component = { ModalGrocery }/>
           <Route path='/delivery-requests' component ={DeliveryRequestRoute} />
-          <Route path='/assign-warehouse' component = {AssignWarehouseRoute} />
-          <Route path='/coordinator-map' component ={CoordinatorMapRoute} /> 
+          <Route path='/assign-warehouse/:id' component = {AssignWarehouseRoute} />
+          <Route path='/coordinator-map/:id' component ={CoordinatorMapRoute} /> 
           <Route path ='/coordinator-login' component={CoordinatorLoginRoute} />
           <Route path= '/create-donation' component = {CreateDonationRoute} />
           <Route path='/user/:id/edit' component = { AdminUserEditComponent }/>
