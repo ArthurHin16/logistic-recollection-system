@@ -1,19 +1,28 @@
-import { FC, useState } from 'react';
-import { Grid, AppBar, Typography, Toolbar, Button } from '@mui/material'
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import Logo from '../images/bamx-oficial.png';
+import { FC, useState, useEffect } from 'react';
+import { Grid, Typography, Button } from '@mui/material'
 import { Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import { useHistory } from "react-router-dom";
 import { useSnackbar } from 'notistack';
 import axios from 'axios';
+import { HeaderComponent } from '../header/header.component';
+//***Importación de las librerías para el aspecto de seguridad
+import { AuthContext } from '../../auth-context';
+import { useContext } from 'react';
 
 export const AdminAddGroceryComponent: FC = (): JSX.Element => {
+    
+
+    //***Se importa el contexto para el aspecto de seguridad
+    const context = useContext(AuthContext);
+
+    useEffect(() => { //SE CONSUME
+        if(!context.userState) {
+            history.push('/');     
+        } 
+     },)
+    
+    //Funcion de login
     let history = useHistory();
-
-    function handleClick() {
-        history.push("/admin");
-    }
-
     function handleClick1() {
         history.push("/admin-grocery");
     }
@@ -62,19 +71,12 @@ export const AdminAddGroceryComponent: FC = (): JSX.Element => {
             })
     }
 
+
     return(
         <Grid container>
-        <AppBar position="static" style={{background: '#F9F6FB', height: '25vh'} }>
-             <Toolbar>
-               <Grid container xs={3} sm={3} md = {3} lg = {2}>
-                <Button onClick={handleClick}><img src = {Logo} alt="logo" width='100%'/></Button>
-               </Grid>      
-               <Typography variant="h4" component="div" sx={{ flexGrow: 1 }} color='#FF9300' align='center'>
-                 Administrador
-               </Typography>
-               <Button size="medium" style = {{ color: "#FF9300" }} >Cerrar sesión <ExitToAppIcon/></Button>
-             </Toolbar> 
-         </AppBar>
+            <Grid>
+                <HeaderComponent/>
+            </Grid>
          <Grid 
              container
              direction="column"

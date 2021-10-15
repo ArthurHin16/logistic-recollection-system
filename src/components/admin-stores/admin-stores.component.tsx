@@ -1,9 +1,5 @@
-import { FC, useState, useEffect } from 'react'
-import { Grid, AppBar, Toolbar, Typography, Button } from '@mui/material';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import Logo from '../images/bamx-oficial.png';
-import { styled} from '@mui/material/styles';
-import InputBase from '@mui/material/InputBase';
+import { FC, useState, useEffect, useContext} from 'react'
+import { Grid, Toolbar, Typography, Button } from '@mui/material';
 import { useHistory } from "react-router-dom";
 import './admin-stores.styles.css';
 import { CardStore } from '../cards/card-store.component';
@@ -11,55 +7,11 @@ import { IStore } from '../../models/store.model'
 import axios from "axios";
 import { useSnackbar } from 'notistack';
 import './admin.styles.css';
-
-const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: '#FF9300',
-  '&:hover': {
-    backgroundColor: '#FF9300',
-  },
-  marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(1),
-    width: 'auto',
-  },
-}));
-  
-  const SearchIconWrapper = styled('div')(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }));
-  
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: 'black',
-    '& .MuiInputBase-input': {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create('width'),
-      width: '100%',
-      [theme.breakpoints.up('sm')]: {
-        width: '12ch',
-        '&:focus': {
-          width: '20ch',
-        },
-      },
-    },
-  }));
+import { HeaderComponent } from '../header/header.component';
+import { AuthContext } from '../../auth-context';
 
 export const AdminStoresComponent: FC = (): JSX.Element => {
   let history = useHistory();
-
-  function handleClick() {
-    history.push("/admin");
-  }
 
   function handleClick1() {
     history.push("/admin-newstore");
@@ -87,10 +39,17 @@ export const AdminStoresComponent: FC = (): JSX.Element => {
     console.log(arr)
     setStore(arr);
   }
+  //useEffect para el aspecto de seguridad
+  const context = useContext(AuthContext); //SE IMPORTA CONTEXT
 
    useEffect(() => {
-    fetchStores(''); //STRING VACIO
-  },[]) //modificar arreglo
+     if(context.userState){
+        fetchStores('');
+     } else {
+        history.push('/');
+     }
+    
+  },[])
 
   //REST API DELETE
   const   { enqueueSnackbar }  = useSnackbar();
@@ -129,28 +88,9 @@ export const AdminStoresComponent: FC = (): JSX.Element => {
   
     return(
         <Grid container>
-
-            <AppBar position="static" style={{background: '#F9F6FB', height: '25vh'} }>
-                <Toolbar>
-                  <Grid container xs={3} sm={3} md = {3} lg = {2}>
-                    <Button onClick={handleClick}><img src = {Logo} alt="logo" width='100%'/></Button>
-                  </Grid>      
-                  <Typography variant="h4" component="div" sx={{ flexGrow: 1 }} color='#FF9300' align='center'>
-                    Administrador
-                  </Typography>
-                  <Button size="medium" style = {{color: "#FF9300"}} >Cerrar sesión <ExitToAppIcon/></Button>
-                </Toolbar> 
-
-                <Grid
-                container
-                direction="column"
-                alignItems="center">
-                    <Typography variant="h4" component="div" sx={{ flexGrow: 1 }} color='black'>
-                    TIENDAS
-                    </Typography>
-                    
-                </Grid>
-            </AppBar>
+            <Grid>
+              <HeaderComponent/>
+            </Grid>
 
             <Grid
                 container
@@ -158,6 +98,16 @@ export const AdminStoresComponent: FC = (): JSX.Element => {
                 justifyContent="space-around"
                 alignItems="center"
             >
+              <Grid container direction="column" alignItems="center">
+                <Typography
+                  variant="h4"
+                  component="div"
+                  sx={{ flexGrow: 1 }}
+                  color="black"
+                  >
+                  TIENDAS
+                </Typography>
+              </Grid>
                     <Button
                         variant = "contained"
                         onClick = { handleClick1 }
