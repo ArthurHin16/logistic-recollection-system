@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { LoginRoute } from './pages/login.route';
 import { AdminHomeRoute } from './pages/admin-homepage.route';
 import { AdminUserRoute } from './pages/admin-user.route'
 import { AdminAddUserRoute } from './pages/admin-add-user.route'

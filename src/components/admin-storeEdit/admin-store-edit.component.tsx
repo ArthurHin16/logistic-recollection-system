@@ -1,13 +1,12 @@
-import { FC, useState, useEffect } from 'react';
-import { Grid, AppBar, Typography, Toolbar, Button } from '@mui/material'
+import { FC, useState, useEffect, useContext } from 'react';
+import { Grid, Typography, Button } from '@mui/material'
 import { Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import { useHistory, useParams } from "react-router-dom";
 import { useSnackbar } from 'notistack';
 import { IStore } from '../../models/store.model';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import Logo from '../images/bamx-oficial.png';
 import axios from 'axios';
-
+import { HeaderComponent } from '../header/header.component';
+import { AuthContext } from '../../auth-context';
 
 
 export const AdminStoreEditComponent: FC = (): JSX.Element => {
@@ -15,10 +14,6 @@ export const AdminStoreEditComponent: FC = (): JSX.Element => {
     const Parametros: any = useParams();
 
     let history = useHistory();
-
-    function handleClick() {
-        history.push("/admin");
-    }
 
     function handleClick1() {
         history.push("/admin-stores");
@@ -56,10 +51,18 @@ export const AdminStoreEditComponent: FC = (): JSX.Element => {
         console.log(item.data[0]);
         console.log(store);
     };
+    
+    //useEffect para el aspecto de seguridad
+    const context = useContext(AuthContext); //SE IMPORTA CONTEXT
 
     useEffect(() => {
-        fetchGrocery();
-    }, []);
+        if(context.userState){
+            fetchGrocery();
+        } else {
+            history.push('/');
+        }
+        
+    },);
 
     const editData = () => {
         console.log(store);
@@ -86,17 +89,11 @@ export const AdminStoreEditComponent: FC = (): JSX.Element => {
 
     return(
         <Grid container>
-           <AppBar position="static" style={{background: '#F9F6FB', height: '25vh'} }>
-                <Toolbar>
-                  <Grid container xs={3} sm={3} md = {3} lg = {2}>
-                    <Button onClick={handleClick}><img src = {Logo} alt="logo" width='100%'/></Button>
-                  </Grid>      
-                  <Typography variant="h4" component="div" sx={{ flexGrow: 1 }} color='#FF9300' align='center'>
-                    Administrador
-                  </Typography>
-                  <Button size="medium" style = {{ color: "#FF9300" }} >Cerrar sesión <ExitToAppIcon/></Button>
-                </Toolbar> 
-            </AppBar>
+           
+           <Grid>
+                <HeaderComponent/>
+            </Grid>
+
             <Grid 
                 container
                 direction="column"
