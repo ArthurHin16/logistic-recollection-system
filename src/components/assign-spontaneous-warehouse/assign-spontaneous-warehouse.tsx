@@ -1,5 +1,4 @@
 import {FC, useState, useEffect} from 'react';
-import './assign-warehouse.styles.css'
 import { Grid, Paper, Button,AppBar,Toolbar} from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Logo from '../images/bamx-oficial.png';
@@ -14,10 +13,11 @@ import { IGrocery } from '../../models/grocery.model';
 import { IDelivery } from '../../models/delivery.model';
 import { useSnackbar } from 'notistack';
 import axios from 'axios';
-export const AssignWarehouseComponent: FC = (): JSX.Element => {
+
+export const AssignSpontaneosWarehouseComponent: FC = (): JSX.Element => {
 
 
-    const baseUrl = "http://localhost:5000/coordinator/asignar-bodega"
+    const baseUrl = "http://localhost:5000/coordinator/asignar-bodega-espontanea"
 
     const   { enqueueSnackbar }  = useSnackbar();
 
@@ -42,7 +42,7 @@ export const AssignWarehouseComponent: FC = (): JSX.Element => {
                         { horizontal: 'right', vertical: 'bottom' }
             });
             })
-            const baseUrl2 = `http://localhost:5000/coordinator/editar-estatus/${Parametros.id}}`
+            const baseUrl2 = `http://localhost:5000/coordinator/editar-estatus-espontaneo/${Parametros.id}}`
                 axios.patch(baseUrl2, estatusdonativo)
                 .then(response => {
                     console.log('res from server: ', response)
@@ -102,7 +102,7 @@ export const AssignWarehouseComponent: FC = (): JSX.Element => {
                         { horizontal: 'right', vertical: 'bottom' }
             });
             })
-            const baseUrl2 = `http://localhost:5000/coordinator/editar-estatus/${Parametros.id}}`
+            const baseUrl2 = `http://localhost:5000/coordinator/editar-estatus-espontaneo/${Parametros.id}}`
                 axios.patch(baseUrl2, estatusdonativo)
                 .then(response => {
                     console.log('res from server: ', response)
@@ -177,7 +177,7 @@ export const AssignWarehouseComponent: FC = (): JSX.Element => {
     });
 
   const fetchDonacion = async () => {
-    const res = await fetch(`http://localhost:5000/coordinator/detalles-entrega/${Parametros.id}`);
+    const res = await fetch(`http://localhost:5000/coordinator/detalles-entrega-espontanea/${Parametros.id}`);
     const item = await res.json();    
     setDonation(item.data[0]);
     console.log(item.data[0]);
@@ -240,7 +240,7 @@ const [delivery2, setDelivery2] = useState<IDelivery>({
                     <Button style = {{color: '#FF9300'}} size="medium">Cerrar sesión <ExitToAppIcon/></Button>
                 </Toolbar>
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} color='#000' align='center' id='title'>
-                        SOLICITUDES DE ENTREGA
+                        SOLICITUD EXTRAORDINARIA
                 </Typography>
             </AppBar>
             <Grid container className = "contenedorNombres">

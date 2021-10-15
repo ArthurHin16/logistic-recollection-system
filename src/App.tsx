@@ -26,6 +26,7 @@ import { AdminStoreEditComponent } from './components/admin-storeEdit/admin-stor
 import { AdminGroceryEditComponent } from './components/admin-groceryEdit/admin-grocery-edit.component';
 import { LoginComponent1 } from './components/login/login1.component';
 import { EditRouteRoute } from './pages/edit-route.route';
+import { AssignSpontaneosWarehouseComponent } from './components/assign-spontaneous-warehouse/assign-spontaneous-warehouse';
 
 export const App: FC = (): JSX.Element => {
   return (
@@ -54,6 +55,7 @@ export const App: FC = (): JSX.Element => {
           <Route path='/store/:id/edit' component = { AdminStoreEditComponent }/>
           <Route path='/grocery/:id/edit' component = { AdminGroceryEditComponent }/>
           <Route path='/edit-route/:id' component ={EditRouteRoute} />
+          <Route path='/assign-spontaneous-warehouse/:id' component ={AssignSpontaneosWarehouseComponent} />
         </Switch>
     </BrowserRouter>
   );

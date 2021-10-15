@@ -45,11 +45,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 
 export const DeliveryRequestComponent: FC = (): JSX.Element => {
-  const [operadores, setOperadores] = useState([]); 
   let history = useHistory();
-
-  const parametros: any = useParams();
-
   
   function handleClick() {
     history.push("/coordinator");
@@ -57,6 +53,10 @@ export const DeliveryRequestComponent: FC = (): JSX.Element => {
 
 function handleClick1(operadores: any) {
     history.push(`/assign-warehouse/${operadores}`);
+}
+
+function handleClick2(valor: any) {
+  history.push(`/assign-spontaneous-warehouse/${valor}`);
 }
 
 const [users, setUsers] = useState<IDeliveryRequest[]>([]);
@@ -77,6 +77,23 @@ const [users, setUsers] = useState<IDeliveryRequest[]>([]);
   }, [users]);
 
 
+  const [espontaneo, setEspontaneo] = useState<IDeliveryRequest[]>([]);
+
+  const fetchEspontaneo = async () => {
+    const res = await fetch("http://localhost:5000/coordinator/donativos-espontaneos");
+    const items = await res.json();
+    const arr: IDeliveryRequest[] = [];
+    for (let item of items.data) {
+      arr.push(item);
+    }
+    setEspontaneo(arr);
+    console.log(arr);
+  };
+
+  useEffect(() => {
+    fetchEspontaneo();
+  }, [espontaneo]);
+  
 
 
     return(
@@ -116,6 +133,18 @@ const [users, setUsers] = useState<IDeliveryRequest[]>([]);
                             <StyledTableCell align="center">{operadores.nombre}</StyledTableCell>
                             <StyledTableCell align="center">
                                 <Button onClick = {()=>handleClick1(operadores.id)} variant = "contained" color = "error" className="botonasignarbodega" >Asignar bodega</Button>
+                            </StyledTableCell>
+                            </StyledTableRow>
+                            ))}
+
+                        {espontaneo.map((espontaneo) => (
+                            <StyledTableRow key={espontaneo.id} >
+                            <StyledTableCell component="th" scope="row" align="center">
+                                {espontaneo.id}
+                            </StyledTableCell>
+                            <StyledTableCell align="center">{espontaneo.nombre}</StyledTableCell>
+                            <StyledTableCell align="center">
+                                <Button onClick = {()=>handleClick2(espontaneo.id)}variant = "contained" color = "error" className="botonasignarbodega" >Asignar bodega</Button>
                             </StyledTableCell>
                             </StyledTableRow>
                             ))}

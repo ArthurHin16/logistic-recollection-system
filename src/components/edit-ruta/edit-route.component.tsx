@@ -68,7 +68,6 @@ function editar (){
 })
 }
 
-
     
   let history = useHistory();
 
@@ -157,9 +156,8 @@ const [users, setUsers] = useState<IDeliveryRequest[]>([]);
                       </Grid>
                   ))}
               </Grid>
-                <Grid container>
+                <Grid container style={{margin: 20}}>
                   <Col xs={2}>
-                  <Label className="titulos">Operador:</Label>
                   <Input type= "select" name = "idOperador" onChange= {handleChange}>
                       <option>
                         Seleccionar operador
