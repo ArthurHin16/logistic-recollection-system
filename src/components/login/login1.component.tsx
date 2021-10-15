@@ -6,9 +6,8 @@ import axios from 'axios';
 import { ILogin } from '../../models/login.model';
 import { useHistory } from "react-router-dom";
 import { useSnackbar } from 'notistack';
-import Cookies from 'universal-cookie';
-
-const cookies = new Cookies();
+import { useContext } from 'react';
+import { AuthContext } from '../../auth-context';
 
 export const LoginComponent1: FC = (): JSX.Element => {
     //Variable para los estilos
@@ -31,57 +30,29 @@ export const LoginComponent1: FC = (): JSX.Element => {
    let history = useHistory();
     const   { enqueueSnackbar }  = useSnackbar();
 
+    //Funcion del Hook
+    const userContext = useContext(AuthContext);
+
    const login1 = () =>  {
     axios.post('http://localhost:5000/admin/login', login)
     .then((response) => {
         console.log('res from server: ', response);
-        console.log('***** cookies: ', login.username);
         if (response){
-            cookies.set('username', login.username, {path: "/"})
-            if(cookies.get('username')){
-                history.push(`/admin`);
-                enqueueSnackbar('Bienvenido!', { 
-                variant: 'success',
-                resumeHideDuration: 2000,
+            userContext.login(); //Validar que exista o que no exista
+            history.push(`/admin`);
+            enqueueSnackbar('Bienvenido!', { 
+            variant: 'success',
+            resumeHideDuration: 2000,
                 anchorOrigin:
                     { horizontal: 'right', vertical: 'bottom' }
-                });
-            }
-            
-    }})
+            });  
+        }
+    })
     .catch(err => {
         console.log(err);
     })
     }
     
-    /*Login
-    const baseUrl = "http://localhost:5000/admin/personal";
-    
-    let history = useHistory();
-    const   { enqueueSnackbar }  = useSnackbar();
-
-    const iniciarSesion = async() => {
-
-        await axios.get(baseUrl, {params: {username: login.username, contrasena: login.contrasena}})
-        .then (response => {
-            const arr :any = response.data
-            const user = arr.data.find((e: any) => e.username === login.username && e.contrasena === login.contrasena) 
-            //console.log(user)
-            if (user){
-                history.push(`/admin`);
-                enqueueSnackbar('Bienvenido!', { 
-                    variant: 'success',
-                    resumeHideDuration: 2000,
-                    anchorOrigin:
-                        { horizontal: 'right', vertical: 'bottom' }
-                });
-            }
-        })
-        .catch(error => {
-            console.log(error);
-        })
-    }*/
-
     return (
        <Grid container component = "main" className = {classes.root}>
            <CssBaseline/>
@@ -119,15 +90,15 @@ export const LoginComponent1: FC = (): JSX.Element => {
 
                         />
                         <Grid container justifyContent="flex-end">
-                                <Button
-                                    className = {classes.button}
-                                    fullWidth
-                                    variant = 'contained'
-                                    style = {{ backgroundColor: '#FF9300'}}
-                                    onClick = {()=>login1()}
-                                >
-                                    Iniciar sesión
-                                </Button>
+                            <Button
+                                className = {classes.button}
+                                fullWidth
+                                variant = 'contained'
+                                style = {{ backgroundColor: '#FF9300'}}
+                                onClick = {()=>login1()}
+                            >
+                                Iniciar sesión
+                            </Button>
                         </Grid>
                     </form>
                </div>

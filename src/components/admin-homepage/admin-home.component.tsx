@@ -1,25 +1,22 @@
-import { FC } from 'react';
-import { Grid, Paper, Button,AppBar,Toolbar } from '@mui/material';
-import Typography from '@mui/material/Typography';
+import { FC, useContext } from 'react';
+import { Grid, Paper, Button } from '@mui/material';
 import './admin-home.styles.css'
 import Users from '../assets/users.png'
-import Logo from '../images/bamx-oficial.png';
 import Tienda from '../assets/tienda.png'
 import Almacen from '../assets/almacen.png'
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 //useHistory: para colocar los links
 import { useHistory } from "react-router-dom";
-import Cookies from 'universal-cookie/es6';
-
-const cookies = new Cookies();
+//Componente header
+import { HeaderComponent } from '../header/header.component';
+import { AuthContext } from '../../auth-context';
+import { useEffect } from 'react';
 
 export const AdminHomeComponent: FC = (): JSX.Element => {
     //Función del Hook useHistory
     let history = useHistory();
 
-    function handleClick() {
-        history.push("/admin");
-    }
+    //Contexto
+    const context = useContext(AuthContext);
 
     function handleClick2() {
         history.push("/admin-user");
@@ -33,31 +30,20 @@ export const AdminHomeComponent: FC = (): JSX.Element => {
         history.push("/admin-grocery");
     }
 
-    //LOGOUT
-    const cerrarSesion = () => {
-        console.log('username: '+cookies.get('username'))
-        cookies.remove('username', {path: "/"});
-        if(!cookies.get('username')){
-            history.push("/")
-            console.log('ADIOS username: '+cookies.get('username'))
-        }
-    }
-    console.log('username: '+cookies.get('username'));
+    console.log(context, context.userState);
+
+    useEffect(() => { //SE CONSUME
+        if(!context.userState) {
+            history.push('/');     
+        } 
+     },)
 
     return(
         <Grid container>
-            <AppBar position="static" style={{background: '#F9F6FB', height: '25vh'} }>
-                <Toolbar>
-                  <Grid container xs={3} sm={3} md = {3} lg = {2}>
-                    <Button onClick={handleClick}><img src = {Logo} alt="logo" width='100%'/></Button>
-                  </Grid>      
-                  <Typography variant="h4" component="div" sx={{ flexGrow: 1 }} color='#FF9300' align='center'>
-                    Administrador
-                  </Typography>
-                  <Button style = {{color: "#FF9300"}} size="medium" onClick={cerrarSesion}>Cerrar sesión <ExitToAppIcon/></Button>
-                </Toolbar> 
-            </AppBar>
-            
+            <Grid>
+                <HeaderComponent/>
+            </Grid>
+
             <Grid container className = "down">
                 <Button
                     type="button" 

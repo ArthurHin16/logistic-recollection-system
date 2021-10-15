@@ -1,64 +1,16 @@
-import { FC, useState, useEffect } from 'react'
-import { Grid, AppBar, Toolbar, Typography, Button } from '@mui/material';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import Logo from '../images/bamx-oficial.png';
-import { styled} from '@mui/material/styles';
-import InputBase from '@mui/material/InputBase';
+import { FC, useState, useEffect, useContext } from 'react'
+import { Grid, Toolbar, Typography, Button } from '@mui/material';
 import { useHistory } from "react-router-dom";
 import { CardGrocery } from '../cards/card-grocery.component';
 import { IGrocery } from '../../models/grocery.model'
 import axios from "axios";
 import { useSnackbar } from 'notistack';
 import './grocery.style.css'
-
-const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: '#FF9300',
-  '&:hover': {
-    backgroundColor: '#FF9300',
-  },
-  marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(1),
-    width: 'auto',
-  },
-}));
-
-  const SearchIconWrapper = styled('div')(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }));
-  
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: 'black',
-    '& .MuiInputBase-input': {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create('width'),
-      width: '100%',
-      [theme.breakpoints.up('sm')]: {
-        width: '12ch',
-        '&:focus': {
-          width: '20ch',
-        },
-      },
-    },
-  }));
+import { HeaderComponent } from '../header/header.component';
+import { AuthContext } from '../../auth-context';
 
 export const AdminGroceryComponent: FC = (): JSX.Element => {
   let history = useHistory();
-
-  function handleClick() {
-    history.push("/admin");
-  }
 
   function handleClick1() {
     history.push("/admin-newgrocery");
@@ -85,8 +37,15 @@ export const AdminGroceryComponent: FC = (): JSX.Element => {
     setGroceries(arr);
   }
 
-   useEffect(() => {
-    fetchGrocery('');           
+  //useEffect para el aspecto de seguridad
+  const context = useContext(AuthContext); //SE IMPORTA CONTEXT
+  
+   useEffect(() => { //SE CONSUME
+     if(context.userState) {
+       fetchGrocery('');        
+     } else {
+       history.push('/');
+     }
   },[])
 
   //REST API DELETE
@@ -127,28 +86,9 @@ export const AdminGroceryComponent: FC = (): JSX.Element => {
 
     return(
         <Grid container>
-
-            <AppBar position="static" style={{background: '#F9F6FB', height: '25vh'} }>
-                <Toolbar>
-                  <Grid container xs={3} sm={3} md = {3} lg = {2}>
-                    <Button onClick={handleClick}><img src = {Logo} alt="logo" width='100%'/></Button>
-                  </Grid>      
-                  <Typography variant="h4" component="div" sx={{ flexGrow: 1 }} color='#FF9300' align='center'>
-                    Administrador
-                  </Typography>
-                  <Button size="medium" style = {{color: "#FF9300"}} >Cerrar sesión <ExitToAppIcon/></Button>
-                </Toolbar> 
-
-                <Grid
-                container
-                direction="column"
-                alignItems="center">
-                    <Typography variant="h4" component="div" sx={{ flexGrow: 1 }} color='black'>
-                    BODEGAS
-                    </Typography>
-                    
-                </Grid>
-            </AppBar>
+            <Grid>
+              <HeaderComponent/>
+            </Grid>
 
             <Grid
                 container
@@ -156,6 +96,16 @@ export const AdminGroceryComponent: FC = (): JSX.Element => {
                 justifyContent="space-around"
                 alignItems="center"
             >
+              <Grid container direction="column" alignItems="center">
+                <Typography
+                  variant="h4"
+                  component="div"
+                  sx={{ flexGrow: 1 }}
+                  color="black"
+                  >
+                  BODEGAS
+                </Typography>
+              </Grid>
                     <Button
                         variant="contained"
                         onClick={ handleClick1 }
