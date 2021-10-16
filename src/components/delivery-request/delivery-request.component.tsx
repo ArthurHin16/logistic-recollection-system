@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {FC} from 'react';
+import {FC, useContext} from 'react';
 import './delivery-request.styles.css'
 import { Grid, Paper, Button,AppBar,Toolbar } from '@mui/material';
 import Typography from '@mui/material/Typography';
@@ -18,9 +18,11 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, {SelectChangeEvent} from '@mui/material/Select';
 import { useState, useEffect } from 'react';
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import axios from 'axios'; // Importar axios
 import { IDeliveryRequest } from "../../models/delivery-request.model";
+import { AuthContext } from '../../auth-context';
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -45,6 +47,20 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 
 export const DeliveryRequestComponent: FC = (): JSX.Element => {
+
+  const context = useContext(AuthContext);
+  useEffect(() => {
+      if(context.userState){
+      } else {
+        history.push('/coordinator-login');
+      }
+    },[]);
+
+  function cerrarSesion(){
+      context.logout();
+      history.push("/coordinator-login");
+  }
+
   let history = useHistory();
   
   function handleClick() {
@@ -107,7 +123,7 @@ const [users, setUsers] = useState<IDeliveryRequest[]>([]);
                     <Typography variant="h4" component="div" sx={{ flexGrow: 1 }} color='#FF9300' align='center'>
                         Coordinador
                     </Typography>
-                    <Button style = {{color: '#FF9300'}} size="medium">Cerrar sesión <ExitToAppIcon/></Button>
+                    <Button style = {{color: '#FF9300'}} size="medium" onClick = {cerrarSesion}>Cerrar sesión <ExitToAppIcon/></Button>
                 </Toolbar>
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} color='#000' align='center' id='title'>
                         SOLICITUDES DE ENTREGA

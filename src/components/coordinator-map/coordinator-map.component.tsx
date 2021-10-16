@@ -1,4 +1,4 @@
-import {FC, useState, useEffect} from 'react';
+import {FC, useState, useEffect, useContext} from 'react';
 import './coordinator-map.styles.css';
 import { Grid, Paper, Button,AppBar,Toolbar} from '@mui/material';
 import Typography from '@mui/material/Typography';
@@ -7,8 +7,24 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import {Label, Input} from 'reactstrap';
 import { useHistory, useParams } from 'react-router-dom';
 import { IUserMap } from '../../models/user-map.model';
+import { AuthContext } from '../../auth-context';
+
 
 export const CoordinatorMap: FC = (): JSX.Element => {
+
+    const context = useContext(AuthContext);
+    useEffect(() => {
+        if(context.userState){
+        } else {
+          history.push('/coordinator-login');
+        }
+      },[]);
+
+    function cerrarSesion(){
+        context.logout();
+        history.push("/coordinator-login");
+    }
+
     let history = useHistory();
 
     function handleClick() {
@@ -47,7 +63,7 @@ const mapUrl = "https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyC1vMtP
                     <Typography variant="h4" component="div" sx={{ flexGrow: 1 }} color='#FF9300' align='center'>
                         Coordinador
                     </Typography>
-                    <Button style = {{color: '#FF9300'}} size="medium">Cerrar sesión <ExitToAppIcon/></Button>
+                    <Button style = {{color: '#FF9300'}} size="medium" onClick = {cerrarSesion}>Cerrar sesión <ExitToAppIcon/></Button>
                 </Toolbar>
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} color='#000' align='center' id='title'>
                         SOLICITUDES DE ENTREGA

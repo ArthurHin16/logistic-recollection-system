@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {FC} from 'react';
+import {FC, useContext} from 'react';
 import './create-donation.styles.css'
 import { Grid, Paper, Button,AppBar,Toolbar } from '@mui/material';
 import Typography from '@mui/material/Typography';
@@ -14,10 +14,24 @@ import axios from 'axios';
 import { useSnackbar } from 'notistack';
 import { IUser } from '../../models/user.model';
 import { ISpontaneousDonation } from '../../models/spontaneous-donation.model';
+import { AuthContext } from '../../auth-context';
 
 
 
 export const CreateDonationComponent: FC = (): JSX.Element => {
+
+    const context = useContext(AuthContext);
+  useEffect(() => {
+      if(context.userState){
+      } else {
+        history.push('/coordinator-login');
+      }
+    },[]);
+
+  function cerrarSesion(){
+      context.logout();
+      history.push("/coordinator-login");
+  }
 
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -128,7 +142,7 @@ const [usuarios, setUsuarios] = useState<IUser[]>([]);
                   <Typography variant="h4" component="div" sx={{ flexGrow: 1 }} color='#FF9300' align='center'>
                     Coordinador
                   </Typography>
-                  <Button size="medium" style = {{ color: "#FF9300" }} >Cerrar sesión <ExitToAppIcon/></Button>
+                  <Button size="medium" style = {{ color: "#FF9300" }} onClick = {cerrarSesion}>Cerrar sesión <ExitToAppIcon/></Button>
                 </Toolbar> 
             </AppBar>
             <Grid container className='SelectsBodegaOperador' >

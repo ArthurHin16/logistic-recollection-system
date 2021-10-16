@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {FC} from 'react';
+import {FC, useContext} from 'react';
 import { Grid, Paper, Button,AppBar,Toolbar } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Logo from '../images/bamx-oficial.png';
@@ -23,8 +23,23 @@ import { IStore } from '../../models/store.model';
 import { AnySrvRecord } from 'dns';
 import { IUser } from '../../models/user.model';
 import './edit-ruta.styles.css'
+import { AuthContext } from '../../auth-context';
+
 
 export const EditRouteComponent: FC = (): JSX.Element => {
+
+  const context = useContext(AuthContext);
+  useEffect(() => {
+      if(context.userState){
+      } else {
+        history.push('/coordinator-login');
+      }
+    },[]);
+
+  function cerrarSesion(){
+      context.logout();
+      history.push("/coordinator-login");
+  }
 
 
   const   { enqueueSnackbar }  = useSnackbar();
@@ -134,7 +149,7 @@ const [users, setUsers] = useState<IDeliveryRequest[]>([]);
                     <Typography variant="h4" component="div" sx={{ flexGrow: 1 }} color='#FF9300' align='center'>
                         Coordinador
                     </Typography>
-                    <Button style = {{color: '#FF9300'}} size="medium">Cerrar sesión <ExitToAppIcon/></Button>
+                    <Button style = {{color: '#FF9300'}} size="medium" onClick = {cerrarSesion}>Cerrar sesión <ExitToAppIcon/></Button>
                 </Toolbar>
                 <Grid container xs ={3} position='relative' className='Gridbajo'>
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} color='#000' align='center' id='title'>

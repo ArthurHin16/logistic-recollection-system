@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {FC} from 'react';
+import {FC, useContext} from 'react';
 import './routes.styles.css'
 import { Grid, Paper, Button,AppBar,Toolbar } from '@mui/material';
 import Typography from '@mui/material/Typography';
@@ -20,6 +20,7 @@ import { useHistory } from "react-router-dom";
 import { IRoute1 } from '../../models/routes1.model';
 import axios from 'axios';
 import { ModalRoute } from '../modals/modal-route.component';
+import { AuthContext } from '../../auth-context';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -45,6 +46,19 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 
 export const RoutesComponent: FC = (): JSX.Element => {
+
+  const context = useContext(AuthContext);
+  useEffect(() => {
+      if(context.userState){
+      } else {
+        history.push('/coordinator-login');
+      }
+    },[]);
+
+  function cerrarSesion(){
+      context.logout();
+      history.push("/coordinator-login");
+  }
 
   const [modal, setModal] = useState(false);
   
@@ -155,7 +169,7 @@ const [users, setUsers] = useState<IDeliveryRequest[]>([]);
                     <Typography variant="h4" component="div" sx={{ flexGrow: 1 }} color='#FF9300' align='center'>
                         Coordinador
                     </Typography>
-                    <Button style = {{color: '#FF9300'}} size="medium">Cerrar sesión <ExitToAppIcon/></Button>
+                    <Button style = {{color: '#FF9300'}} size="medium" onClick = {cerrarSesion}>Cerrar sesión <ExitToAppIcon/></Button>
                 </Toolbar>
                 <Grid container xs ={3} position='relative' className='Gridbajo'>
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} color='#000' align='center' id='title'>

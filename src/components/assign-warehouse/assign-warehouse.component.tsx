@@ -1,4 +1,4 @@
-import {FC, useState, useEffect} from 'react';
+import {FC, useState, useEffect, useContext} from 'react';
 import './assign-warehouse.styles.css'
 import { Grid, Paper, Button,AppBar,Toolbar} from '@mui/material';
 import Typography from '@mui/material/Typography';
@@ -14,8 +14,22 @@ import { IGrocery } from '../../models/grocery.model';
 import { IDelivery } from '../../models/delivery.model';
 import { useSnackbar } from 'notistack';
 import axios from 'axios';
+import { AuthContext } from '../../auth-context';
+
 export const AssignWarehouseComponent: FC = (): JSX.Element => {
 
+    const context = useContext(AuthContext);
+    useEffect(() => {
+        if(context.userState){
+        } else {
+          history.push('/coordinator-login');
+        }
+      },[]);
+
+    function cerrarSesion(){
+        context.logout();
+        history.push("/coordinator-login");
+    }
 
     const baseUrl = "http://localhost:5000/coordinator/asignar-bodega"
 
@@ -237,7 +251,7 @@ const [delivery2, setDelivery2] = useState<IDelivery>({
                     <Typography variant="h4" component="div" sx={{ flexGrow: 1 }} color='#FF9300' align='center'>
                         Coordinador
                     </Typography>
-                    <Button style = {{color: '#FF9300'}} size="medium">Cerrar sesión <ExitToAppIcon/></Button>
+                    <Button style = {{color: '#FF9300'}} size="medium" onClick={cerrarSesion}>Cerrar sesión <ExitToAppIcon/></Button>
                 </Toolbar>
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} color='#000' align='center' id='title'>
                         SOLICITUDES DE ENTREGA

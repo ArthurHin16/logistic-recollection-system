@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useContext, useEffect } from 'react';
 import { Grid, Paper, Button,AppBar,Toolbar } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import './coordinator.styles.css'
@@ -8,15 +8,23 @@ import Camion from '../assets/camion-de-reparto.png';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { useHistory } from "react-router-dom";
 import Cookies from 'universal-cookie';
+import { AuthContext } from '../../auth-context';
 
 const cookies = new Cookies()
 export const CoordinatorComponent: FC = (): JSX.Element => {
     let history = useHistory();
 
+    const context = useContext(AuthContext);
+    useEffect(() => {
+        if(context.userState){
+        } else {
+          history.push('/coordinator-login');
+        }
+      },[]);
 
     function cerrarSesion(){
-        cookies.remove('username', {path: "/"})
-        window.location.href='./coordinator-login'
+        context.logout();
+        history.push("/coordinator-login");
     }
 
     function handleClick() {
