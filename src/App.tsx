@@ -9,17 +9,11 @@ import { AdminAddStoreRoute } from './pages/admin-add-store.route';
 import { AdminAddGroceryRoute } from './pages/admin-add-grocery.route';
 import { CoordinatorRoute } from './pages/coordinator.route';
 import { RoutesRoute } from './pages/routes.route';
-import { ModalUser } from './components/modals/modal-user.component'
-import { ModalStore } from './components/modals/modal-store.component';
-import { ModalGrocery } from './components/modals/modal-grocery.component';
 import { DeliveryRequestRoute } from './pages/delivery-request.route';
 import { AssignWarehouseRoute } from './pages/assign-warehouse.route';
 import { CoordinatorMapRoute } from './pages/coordinator-map.route';
 import { CoordinatorLoginRoute } from './pages/coordinator-login.route';
 import { CreateDonationRoute } from './pages/create-donation.route';
-
-
-
 import { AdminUserEditComponent } from './components/admin-userEdit/admin-user-edit.component';
 import { AdminStoreEditComponent } from './components/admin-storeEdit/admin-store-edit.component';
 import { AdminGroceryEditComponent } from './components/admin-groceryEdit/admin-grocery-edit.component';
@@ -42,9 +36,6 @@ export const App: FC = (): JSX.Element => {
           <Route path='/admin-grocery' component = { AdminGroceryRoute}/>
           <Route path='/admin-newgrocery' component = { AdminAddGroceryRoute }/>
           <Route path='/coordinator' component = { CoordinatorRoute }/>
-          <Route path='/modal' component = { ModalUser }/>
-          <Route path='/modal2' component = { ModalStore }/>
-          <Route path='/modal3' component = { ModalGrocery }/>
           <Route path='/delivery-requests' component ={DeliveryRequestRoute} />
           <Route path='/assign-warehouse/:id' component = {AssignWarehouseRoute} />
           <Route path='/coordinator-map/:id' component ={CoordinatorMapRoute} /> 
