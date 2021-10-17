@@ -8,10 +8,18 @@ import { AdminGroceryRoute } from './pages/admin-grocery.route';
 import { AdminAddStoreRoute } from './pages/admin-add-store.route';
 import { AdminAddGroceryRoute } from './pages/admin-add-grocery.route';
 import { CoordinatorRoute } from './pages/coordinator.route';
+import { RoutesRoute } from './pages/routes.route';
+import { DeliveryRequestRoute } from './pages/delivery-request.route';
+import { AssignWarehouseRoute } from './pages/assign-warehouse.route';
+import { CoordinatorMapRoute } from './pages/coordinator-map.route';
+import { CoordinatorLoginRoute } from './pages/coordinator-login.route';
+import { CreateDonationRoute } from './pages/create-donation.route';
 import { AdminUserEditComponent } from './components/admin-userEdit/admin-user-edit.component';
 import { AdminStoreEditComponent } from './components/admin-storeEdit/admin-store-edit.component';
 import { AdminGroceryEditComponent } from './components/admin-groceryEdit/admin-grocery-edit.component';
 import { LoginComponent1 } from './components/login/login1.component';
+import { EditRouteRoute } from './pages/edit-route.route';
+import { AssignSpontaneosWarehouseComponent } from './components/assign-spontaneous-warehouse/assign-spontaneous-warehouse';
 
 export const App: FC = (): JSX.Element => {
   return (
@@ -19,6 +27,8 @@ export const App: FC = (): JSX.Element => {
         <Switch>
           <Route path='/' exact component = { LoginComponent1 }/>
           <Route path="/admin" component = { AdminHomeRoute }/>
+          <Route path='/coordinator' component = {CoordinatorRoute}/>
+          <Route path='/routes' component = {RoutesRoute}/>
           <Route path='/admin-user' component = { AdminUserRoute }/>
           <Route path='/admin-newuser' component = { AdminAddUserRoute }/>
           <Route path='/admin-stores' component = { AdminStoresRoute }/>
@@ -26,9 +36,16 @@ export const App: FC = (): JSX.Element => {
           <Route path='/admin-grocery' component = { AdminGroceryRoute}/>
           <Route path='/admin-newgrocery' component = { AdminAddGroceryRoute }/>
           <Route path='/coordinator' component = { CoordinatorRoute }/>
+          <Route path='/delivery-requests' component ={DeliveryRequestRoute} />
+          <Route path='/assign-warehouse/:id' component = {AssignWarehouseRoute} />
+          <Route path='/coordinator-map/:id' component ={CoordinatorMapRoute} /> 
+          <Route path ='/coordinator-login' component={CoordinatorLoginRoute} />
+          <Route path= '/create-donation' component = {CreateDonationRoute} />
           <Route path='/user/:id/edit' component = { AdminUserEditComponent }/>
           <Route path='/store/:id/edit' component = { AdminStoreEditComponent }/>
           <Route path='/grocery/:id/edit' component = { AdminGroceryEditComponent }/>
+          <Route path='/edit-route/:id' component ={EditRouteRoute} />
+          <Route path='/assign-spontaneous-warehouse/:id' component ={AssignSpontaneosWarehouseComponent} />
         </Switch>
     </BrowserRouter>
   );

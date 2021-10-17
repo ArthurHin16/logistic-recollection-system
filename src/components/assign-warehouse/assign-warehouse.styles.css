@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+*{
+    font-family: 'Roboto';
+}
+
+#title{
+    font-size: 48px;
+    color: black;
+}
+
+.contenedorNombres{
+    display: flex;
+}
+
+.nombreEmpleado{
+    display: flex;
+    position: relative;
+    left: 2%;
+    top: 2%;
+}
+
+.datosEmpleado{
+    font-size: 33px;
+}
+
+.btnVerUbicacion{
+    position: relative;
+    left:90%;
+    bottom: 50%;
+}
+.separaBoton{
+    position: relative;
+    right: 2%;
+}
+
+.botonesFinal{
+    position: relative;
+    display: flex;
+    left: 80%;
+}
+
+.pantallaPrincipal{
+    display: flex;
+
+}
+
+.labelsyBotones{
+    display: flex;
+    justify-content: space-around;
+}
+
+.valoresCantidad{
+    display: flex;
+    position: relative;
+    top: 38px;
+}
+
+
+.labels{
+    display: flex;
+    position: relative;
+    left: 2%;
+    width: 100px;
+}
+
+.inputs{
+    width: 100px;
+}
+
+.BotonAgregaBodega{
+    position: relative;
+    left: 400px;
+}
+
+.Formasignar{
+    position: relative;
+    top: 40px;
+
+}
+
+.ContenedorForm{
+    position: relative;
+    top: 50px;
+    left: 30px;
+}
+
+.ContenedorForm2{
+    position: relative;
+    left: 300px;
+    bottom: 194px;
+}
+
+
+.inputDisabled{
+    position: relative;
+    width: 154px;
+    height: 50px;
+}
+
+.acomodoForm{
+    position: relative;
+    right: 240px;
+    top: 40px;
+}

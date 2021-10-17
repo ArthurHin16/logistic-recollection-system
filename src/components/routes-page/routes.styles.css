@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+*{
+    font-family: 'Roboto';
+}
+
+#title{
+    font-size: 48px;
+    color: black;
+}
+
+#encabezado{
+    background: orange;
+    color: black;
+    font-size: 20px;
+    font-weight: bolder;
+    border: 1px solid #000;
+}
+
+.Gridbajo{
+    left: 45%;
+    
+}
+
+.botonespontaneo{
+    display: flex;
+    position: relative;
+    width: 100px;
+    height: 80px;
+    left: 100%;
+    background: #FF9300;
+}

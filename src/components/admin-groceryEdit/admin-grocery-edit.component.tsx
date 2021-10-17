@@ -45,8 +45,6 @@ export const AdminGroceryEditComponent: FC = (): JSX.Element => {
         const res = await fetch(`http://localhost:5000/admin//ver-bodega/${Parametros.id}`);
         const item = await res.json();
         setGrocery(item.data[0]);
-        console.log(item.data[0]);
-        console.log(grocery);
     };
 
     //useEffect para el aspecto de seguridad
@@ -59,7 +57,7 @@ export const AdminGroceryEditComponent: FC = (): JSX.Element => {
             history.push('/');
         }
         
-    },);
+    },[]);
 
     const editData = () => {
         console.log(grocery);
@@ -83,6 +81,7 @@ export const AdminGroceryEditComponent: FC = (): JSX.Element => {
             });
             })
     }
+    
 
     return(
         <Grid container>
@@ -105,7 +104,7 @@ export const AdminGroceryEditComponent: FC = (): JSX.Element => {
                          <Col xs = { 6 } md = { 6 } lg = { 6 }>
                              <FormGroup>
                                  <Label for="b_ID">ID</Label>
-                                 <Input type="text" name="b_ID" id="ID_bodega" disabled defaultValue = {grocery.id}/>
+                                 <Input type="text" name="id" id="ID_bodega" disabled defaultValue = {grocery.id}/>
                              </FormGroup>
                          </Col>
                          <Col xs = { 6 } md = { 6 } lg = { 6 }>

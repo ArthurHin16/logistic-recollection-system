@@ -62,7 +62,7 @@ export const AdminStoreEditComponent: FC = (): JSX.Element => {
             history.push('/');
         }
         
-    },);
+    },[]);
 
     const editData = () => {
         console.log(store);

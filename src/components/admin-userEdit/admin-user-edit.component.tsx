@@ -54,13 +54,6 @@ export const AdminUserEditComponent: FC = (): JSX.Element => {
 
     const baseUrl = `http://localhost:5000/admin/editar-empleado/${user.id}`;
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(e.target.value)
-        setUser({
-            ...user, //Mantener todo lo que ya esta en la constante body
-            [e.target.name]: e.target.value
-        })
-    };
 
     // Variable for show alerts
     const   { enqueueSnackbar }  = useSnackbar();
@@ -70,8 +63,15 @@ export const AdminUserEditComponent: FC = (): JSX.Element => {
         const res = await fetch(`http://localhost:5000/admin/empleado/${Parametros.id}`);
         const item = await res.json();
         setUser(item.data[0]);
-        console.log(item.data[0]);
-        console.log(user);
+    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        console.log(e.target.value)
+        setUser({
+            ...user, //Mantener todo lo que ya esta en la constante body
+            [e.target.name]: e.target.value
+        })
+        
     };
 
     //useEffect para el aspecto de seguridad
@@ -83,7 +83,7 @@ export const AdminUserEditComponent: FC = (): JSX.Element => {
         } else {
             history.push('/');
         }
-    },);
+    },[]);
     
 
     //Asignación de valores
@@ -94,12 +94,15 @@ export const AdminUserEditComponent: FC = (): JSX.Element => {
         axios.patch(baseUrl, user)
             .then(response => {
                 console.log('res from server: ', response)
+                console.log(user);
                 enqueueSnackbar('Usuario Modificado!', { 
                     variant: 'success',
                     resumeHideDuration: 2000,
                     anchorOrigin:
                         { horizontal: 'right', vertical: 'bottom' }
-            });
+                
+            }
+            );
             })
             .catch(err => {
                 console.log(err);
@@ -173,7 +176,7 @@ export const AdminUserEditComponent: FC = (): JSX.Element => {
                                     <Input type="text" name="apellidoMaterno" id="Amaterno" onChange = { handleChange } defaultValue={user.apellidoMaterno as any}/>
                                 </FormGroup>  
                             </Col>
-                        </Row>
+                        </Row>    
                         <Row>
                             <Col xs = { 4 } md = { 4 } lg = { 4 }>
                                 <FormGroup>
