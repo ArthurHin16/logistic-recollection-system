@@ -176,7 +176,7 @@ export const AdminUserEditComponent: FC = (): JSX.Element => {
                                     <Input type="text" name="apellidoMaterno" id="Amaterno" onChange = { handleChange } defaultValue={user.apellidoMaterno as any}/>
                                 </FormGroup>  
                             </Col>
-                        </Row>
+                        </Row>    
                         <Row>
                             <Col xs = { 4 } md = { 4 } lg = { 4 }>
                                 <FormGroup>
