@@ -28,7 +28,10 @@ export const AssignSpontaneosWarehouseComponent: FC = (): JSX.Element => {
         history.push("/coordinator-login");
     }
 
+    const Parametros: any=useParams();
+
     const baseUrl = "http://localhost:5000/coordinator/asignar-bodega-espontanea"
+    const baseUrl2 = `http://localhost:5000/coordinator/editar-estatus-espontaneo/${Parametros.id}}`
 
     const   { enqueueSnackbar }  = useSnackbar();
 
@@ -37,27 +40,10 @@ export const AssignSpontaneosWarehouseComponent: FC = (): JSX.Element => {
             axios.post(baseUrl, delivery)
             .then(response => {
                 console.log('res from server: ', response)
-                enqueueSnackbar('Asignacion de bodega creada', { 
-                    variant: 'success',
-                    resumeHideDuration: 2000,
-                    anchorOrigin:
-                        { horizontal: 'right', vertical: 'bottom' }
-            });
-            })
-            .catch(err => {
-                console.log('Hola', err);
-                enqueueSnackbar('Error!', { 
-                    variant: 'error',
-                    resumeHideDuration: 2000,
-                    anchorOrigin:
-                        { horizontal: 'right', vertical: 'bottom' }
-            });
-            })
-            const baseUrl2 = `http://localhost:5000/coordinator/editar-estatus-espontaneo/${Parametros.id}}`
                 axios.patch(baseUrl2, estatusdonativo)
                 .then(response => {
                     console.log('res from server: ', response)
-                    enqueueSnackbar('Donativo actualizado', { 
+                    enqueueSnackbar('Asignación realizada con éxito', { 
                         variant: 'success',
                         resumeHideDuration: 2000,
                         anchorOrigin:
@@ -66,77 +52,75 @@ export const AssignSpontaneosWarehouseComponent: FC = (): JSX.Element => {
                 })
                 .catch(err => {
                     console.log(err);
-                    enqueueSnackbar('Error!', { 
+                    enqueueSnackbar('Error al actualizar donativo', { 
                         variant: 'error',
                         resumeHideDuration: 2000,
                         anchorOrigin:
                             { horizontal: 'right', vertical: 'bottom' }
                 }); 
             })
+            })
+            .catch(err => {
+                console.log('Hola', err);
+                enqueueSnackbar('Error al crear asignación', { 
+                    variant: 'error',
+                    resumeHideDuration: 2000,
+                    anchorOrigin:
+                        { horizontal: 'right', vertical: 'bottom' }
+            });
+            })
         }
+
         else if(show === true){
             axios.post(baseUrl, delivery)
             .then(response => {
                 console.log('res from server: ', response)
-                enqueueSnackbar('Asignacion de bodega creada', { 
-                    variant: 'success',
-                    resumeHideDuration: 2000,
-                    anchorOrigin:
-                        { horizontal: 'right', vertical: 'bottom' }
-            });
-            })
-            .catch(err => {
-                console.log('Hola', err);
-                enqueueSnackbar('Error!', { 
-                    variant: 'error',
-                    resumeHideDuration: 2000,
-                    anchorOrigin:
-                        { horizontal: 'right', vertical: 'bottom' }
-            });
-            })
-            axios.post(baseUrl, delivery2)
-            .then(response => {
-                console.log('res from server: ', response)
-                enqueueSnackbar('Asignacion de bodega creada', { 
-                    variant: 'success',
-                    resumeHideDuration: 2000,
-                    anchorOrigin:
-                        { horizontal: 'right', vertical: 'bottom' }
-            });
-            })
-            .catch(err => {
-                console.log('Hola', err);
-                enqueueSnackbar('Error!', { 
-                    variant: 'error',
-                    resumeHideDuration: 2000,
-                    anchorOrigin:
-                        { horizontal: 'right', vertical: 'bottom' }
-            });
-            })
-            const baseUrl2 = `http://localhost:5000/coordinator/editar-estatus-espontaneo/${Parametros.id}}`
-                axios.patch(baseUrl2, estatusdonativo)
+                axios.post(baseUrl, delivery2)
                 .then(response => {
                     console.log('res from server: ', response)
-                    enqueueSnackbar('Donativo actualizado', { 
-                        variant: 'success',
+                    axios.patch(baseUrl2, estatusdonativo)
+                    .then(response => {
+                        console.log('res from server: ', response)
+                        enqueueSnackbar('Asignación de donativo correcta', { 
+                            variant: 'success',
+                            resumeHideDuration: 2000,
+                            anchorOrigin:
+                                { horizontal: 'right', vertical: 'bottom' }
+                    });
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        enqueueSnackbar('Error al actualizar donativo', { 
+                            variant: 'error',
+                            resumeHideDuration: 2000,
+                            anchorOrigin:
+                                { horizontal: 'right', vertical: 'bottom' }
+                    }); 
+                })
+                })
+                .catch(err => {
+                    console.log('Hola', err);
+                    enqueueSnackbar('Error al asignar en la segunda bodega', { 
+                        variant: 'error',
                         resumeHideDuration: 2000,
                         anchorOrigin:
                             { horizontal: 'right', vertical: 'bottom' }
                 });
                 })
-                .catch(err => {
-                    console.log(err);
-                    enqueueSnackbar('Error!', { 
-                        variant: 'error',
-                        resumeHideDuration: 2000,
-                        anchorOrigin:
-                            { horizontal: 'right', vertical: 'bottom' }
-                }); 
+            })
+            .catch(err => {
+                console.log('Hola', err);
+                enqueueSnackbar('Error al asignar en primera bodega', { 
+                    variant: 'error',
+                    resumeHideDuration: 2000,
+                    anchorOrigin:
+                        { horizontal: 'right', vertical: 'bottom' }
+            });
             })
         }
     }
 
-    const Parametros: any=useParams();
+
     const [show, setShow] = useState<boolean>(false)
     let history = useHistory();
 
@@ -242,7 +226,7 @@ const [delivery2, setDelivery2] = useState<IDelivery>({
             <AppBar position="static" style={{background: '#F9F6FB', height: '30vh'} }>
                 <Toolbar>
                     <Grid container xs={3} sm={3} md = {3} lg = {2}>
-                        <Button onClick={handleClick} ><img src = {Logo} width='100%' onClick={handleClick}/> </Button>
+                        <Button onClick={handleClick} ><img src = {Logo} alt = "Logo" width='100%' onClick={handleClick}/> </Button>
                     </Grid>
 
                     <Typography variant="h4" component="div" sx={{ flexGrow: 1 }} color='#FF9300' align='center'>

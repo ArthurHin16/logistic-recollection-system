@@ -1,10 +1,10 @@
 import {FC, useState, useEffect, useContext} from 'react';
 import './coordinator-map.styles.css';
-import { Grid, Paper, Button,AppBar,Toolbar} from '@mui/material';
+import { Grid, Button,AppBar,Toolbar} from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Logo from '../images/bamx-oficial.png';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import {Label, Input} from 'reactstrap';
+import {Label} from 'reactstrap';
 import { useHistory, useParams } from 'react-router-dom';
 import { IUserMap } from '../../models/user-map.model';
 import { AuthContext } from '../../auth-context';
@@ -50,14 +50,13 @@ useEffect(() => {
 fetchUsuario();
 }, []);
 
-const mapUrl = "https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyC1vMtPp4xYDewFYPZv0AZMQHpgsTLV3-I"
 
     return(
         <Grid container>
             <AppBar position="static" style={{background: '#F9F6FB', height: '30vh'} }>
                 <Toolbar>
                     <Grid container xs={3} sm={3} md = {3} lg = {2}>
-                        <Button onClick={handleClick}><img src = {Logo} width='100%'/> </Button>
+                        <Button onClick={handleClick}><img src = {Logo} alt = "Logo" width='100%'/> </Button>
                     </Grid>
 
                     <Typography variant="h4" component="div" sx={{ flexGrow: 1 }} color='#FF9300' align='center'>

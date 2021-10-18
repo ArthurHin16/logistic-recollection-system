@@ -1,27 +1,15 @@
 import * as React from 'react';
 import {FC, useContext} from 'react';
-import { Grid, Paper, Button,AppBar,Toolbar } from '@mui/material';
+import { Grid, Button,AppBar,Toolbar } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Logo from '../images/bamx-oficial.png';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import { styled } from '@mui/material/styles';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
 import { useSnackbar } from 'notistack';
 import { useState, useEffect } from 'react';
 import {IDeliveryRequest} from "../../models/delivery-request.model";
-import { Input, Label, FormGroup, Col } from 'reactstrap';  
+import { Input, Label, Col } from 'reactstrap';  
 import { useHistory, useParams } from "react-router-dom";
-import { IRoute1 } from '../../models/routes1.model';
 import axios from 'axios';
-import { IfStatement } from 'typescript';
-import { IStore } from '../../models/store.model';
-import { AnySrvRecord } from 'dns';
-import { IUser } from '../../models/user.model';
 import './edit-ruta.styles.css'
 import { AuthContext } from '../../auth-context';
 
@@ -143,7 +131,7 @@ const [users, setUsers] = useState<IDeliveryRequest[]>([]);
             <AppBar position="static" style={{background: '#F9F6FB', height: '30vh'} }>
                 <Toolbar>
                     <Grid container xs={3} sm={3} md = {3} lg = {2}>
-                        <Button onClick={handleClick}><img src = {Logo} width='100%'/> </Button>
+                        <Button onClick={handleClick}><img src = {Logo} alt = "Logo" width='100%'/> </Button>
                     </Grid>
 
                     <Typography variant="h4" component="div" sx={{ flexGrow: 1 }} color='#FF9300' align='center'>

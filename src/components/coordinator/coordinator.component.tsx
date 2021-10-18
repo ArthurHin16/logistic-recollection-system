@@ -7,10 +7,8 @@ import Ruta from '../assets/ruta.png';
 import Camion from '../assets/camion-de-reparto.png';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { useHistory } from "react-router-dom";
-import Cookies from 'universal-cookie';
 import { AuthContext } from '../../auth-context';
 
-const cookies = new Cookies()
 export const CoordinatorComponent: FC = (): JSX.Element => {
     let history = useHistory();
 

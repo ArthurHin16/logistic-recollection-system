@@ -1,14 +1,13 @@
 import * as React from 'react';
 import {FC, useContext} from 'react';
 import './create-donation.styles.css'
-import { Grid, Paper, Button,AppBar,Toolbar } from '@mui/material';
+import { Grid, Button,AppBar,Toolbar } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Logo from '../images/bamx-oficial.png';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
-import { Input, Label, FormGroup, Col } from 'reactstrap';   
-import { IDeliveryRequest } from '../../models/delivery-request.model';
+import { Input, Col } from 'reactstrap';   
 import { IStore } from '../../models/store.model';
 import axios from 'axios';
 import { useSnackbar } from 'notistack';
@@ -16,7 +15,6 @@ import { IUser } from '../../models/user.model';
 import { ISpontaneousDonation } from '../../models/spontaneous-donation.model';
 import { AuthContext } from '../../auth-context';
 
-//Agre
 
 export const CreateDonationComponent: FC = (): JSX.Element => {
 

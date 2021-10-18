@@ -12,14 +12,10 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { useSnackbar } from 'notistack';
 import { useState, useEffect } from 'react';
-import {IDeliveryRequest} from "../../models/delivery-request.model";
-import { Input, Label, FormGroup, Col } from 'reactstrap';  
 import { useHistory } from "react-router-dom";
 import { IRoute1 } from '../../models/routes1.model';
-import axios from 'axios';
-import { ModalRoute } from '../modals/modal-route.component';
+
 import { AuthContext } from '../../auth-context';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -60,52 +56,6 @@ export const RoutesComponent: FC = (): JSX.Element => {
       history.push("/coordinator-login");
   }
 
-  const [modal, setModal] = useState(false);
-  
-  const toggle = () => setModal(!modal);
-
-  const   { enqueueSnackbar }  = useSnackbar();
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("hola", e.target.value)
-    setEruta({
-      ...eruta, //Mantener todo lo que ya esta en la constante body
-      [e.target.name]: e.target.value
-  })
-    
-  };
-
-
-
-const [eruta, setEruta] = useState ({
-      id: "",
-      dia: "",
-      idOperador: "",
-})
-
-function editar (id: any){
-  const baseUrl = `http://localhost:5000/coordinator/asignar-operador/${id}}`
-    axios.patch(baseUrl, eruta)
-      .then(response => {
-          console.log('res from server: ', response)
-          enqueueSnackbar('Tienda Modificada!', { 
-              variant: 'success',
-              resumeHideDuration: 2000,
-              anchorOrigin:
-                  { horizontal: 'right', vertical: 'bottom' }
-      });
-      })
-      .catch(err => {
-          console.log(err);
-          enqueueSnackbar('Error!', { 
-              variant: 'error',
-              resumeHideDuration: 2000,
-              anchorOrigin:
-                  { horizontal: 'right', vertical: 'bottom' }
-      }); 
-})
-}
-
-
     
   let history = useHistory();
 
@@ -120,24 +70,6 @@ function handleClick1() {
 function handleClick2(id: any){
   history.push(`/edit-route/${id}`)
 }
-
-const [users, setUsers] = useState<IDeliveryRequest[]>([]);
-
-  const fetchPersonal = async () => {
-    const res = await fetch("http://localhost:5000/coordinator/operadores");
-    const items = await res.json();
-    const arr: IDeliveryRequest[] = [];
-    for (let item of items.data) {
-      arr.push(item);
-    }
-    setUsers(arr);
-    console.log(arr);
-  };
-
-  useEffect(() => {
-    fetchPersonal();
-  }, [users]);
-
 
 
   const [rutas, setRutas] = useState<IRoute1[]>([])
@@ -163,7 +95,7 @@ const [users, setUsers] = useState<IDeliveryRequest[]>([]);
             <AppBar position="static" style={{background: '#F9F6FB', height: '30vh'} }>
                 <Toolbar>
                     <Grid container xs={3} sm={3} md = {3} lg = {2}>
-                        <Button onClick={handleClick}><img src = {Logo} width='100%'/> </Button>
+                        <Button onClick={handleClick}><img src = {Logo} alt = "Logo" width='100%'/> </Button>
                     </Grid>
 
                     <Typography variant="h4" component="div" sx={{ flexGrow: 1 }} color='#FF9300' align='center'>

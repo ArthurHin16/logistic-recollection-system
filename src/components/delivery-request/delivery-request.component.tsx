@@ -12,14 +12,8 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, {SelectChangeEvent} from '@mui/material/Select';
 import { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
-import axios from 'axios'; // Importar axios
 import { IDeliveryRequest } from "../../models/delivery-request.model";
 import { AuthContext } from '../../auth-context';
 
@@ -117,7 +111,7 @@ const [users, setUsers] = useState<IDeliveryRequest[]>([]);
             <AppBar position="static" style={{background: '#F9F6FB', height: '30vh'} }>
                 <Toolbar>
                     <Grid container xs={3} sm={3} md = {3} lg = {2}>
-                        <Button onClick={handleClick}><img src = {Logo} width='100%'/> </Button>
+                        <Button onClick={handleClick}><img src = {Logo} alt = "Logo" width='100%'/> </Button>
                     </Grid>
 
                     <Typography variant="h4" component="div" sx={{ flexGrow: 1 }} color='#FF9300' align='center'>
