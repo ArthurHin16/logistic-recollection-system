@@ -10,5 +10,6 @@ export interface ISpontaneousDonation {
     responsable: string | null;
     idOperador: number | null | string;
     idTienda: number | null | string;
+    estatusOperador: string | null;
   }
   

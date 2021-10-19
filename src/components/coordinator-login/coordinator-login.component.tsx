@@ -74,7 +74,7 @@ export const CoordinatorLoginComponent: FC = (): JSX.Element => {
                             color = 'primary'
                             margin = 'normal'
                             variant = 'outlined'
-                            label = 'Correo eletrónico'
+                            label = 'Usuario'
                             name = 'username'
                             onChange = { handleChange }
                         />

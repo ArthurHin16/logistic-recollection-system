@@ -51,10 +51,12 @@ const [donativoespontaneo, setDonativoespontaneo] = useState<ISpontaneousDonatio
     kg_no_comestibles: '', 
     folio: '', 
     estatus: 'Pendiente',
+    estatusOperador: 'Pendiente',
     fecha: '',
     responsable: '',
     idOperador: '',
     idTienda: '',
+    
 });
 
 const baseUrl = "http://localhost:5000/coordinator/donacion-espontanea"
